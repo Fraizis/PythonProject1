@@ -67,7 +67,46 @@ def synonym_dict() -> None:
     print(word_syn)
 
 
+def min_in_length():
+    """
+    Рассмотрим последовательность целых чисел длины n n.
+    По ней двигается «окно» длины k k: сначала в «окне» находятся первые k k чисел,
+    на следующем шаге в «окне» уже будут находиться k k чисел, начиная со второго,
+    и так далее до конца последовательности.
+    Требуется для каждого положения «окна» определить минимум в нём.
+
+    Формат ввода
+    В первой строке входных данных содержатся два натуральных
+    числа n и k (n ≤ 150000, k ≤ 10000, k ≤ n) —
+    длины последовательности и «окна», соответственно.
+    На следующей строке находятся n n целых чисел — сама последовательность.
+
+    Формат вывода
+    Выведите n − k + 1 строк.
+    В каждой строке должно быть одно число — минимум для
+    соответствующего положения «окна».
+    """
+    n = 7
+    k = 3
+    # while True:
+    #     nums = input(f'Введите {n} цифр:')
+    #     nums_array = nums.split(' ')
+    #     if len(nums_array) == n:
+    #         break
+    #
+    #     print(f'Нужно ввести {n} цифр')
+
+    array = '1 3 2 4 5 3 1'
+    nums_array = [int(num) for num in array.split(' ')]
+
+    for num in range(len(nums_array)):
+        if num + k - 1 < len(nums_array):
+            min_num_list = [nums_array[i] for i in range(num, num + k)]
+            print(f'Min num: {min(min_num_list)}')
+
+
 if __name__ == '__main__':
     # bracket_order()
     # count_words_in_text()
-    synonym_dict()
+    # synonym_dict()
+    min_in_length()
