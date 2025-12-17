@@ -32,7 +32,7 @@ def check_relation(net: tuple, first: str, second: str) -> bool | None:
         if first in tup:
             search_name = [name for name in tup if name != first][0]
             print('search_name:', search_name)
-            new_net = [elem for elem in net if elem != tup]
+            new_net = tuple(elem for elem in net if elem != tup)
             if second == search_name:
                 print(f'Matched: {second} == {search_name}')
                 return True
