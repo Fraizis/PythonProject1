@@ -86,27 +86,27 @@ def min_in_length():
     В каждой строке должно быть одно число — минимум для
     соответствующего положения «окна».
     """
-    n = 7
-    k = 3
-    # while True:
-    #     nums = input(f'Введите {n} цифр:')
-    #     nums_array = nums.split(' ')
-    #     if len(nums_array) == n:
-    #         break
-    #
-    #     print(f'Нужно ввести {n} цифр')
+    length = int(input(f'Введите количество цифр:'))
+    step = int(input(f'Введите шаг:'))
 
-    array = '1 3 2 4 5 3 1'
-    nums_array = [int(num) for num in array.split(' ')]
+    while True:
+        nums = input(f'Введите {length} цифр:')
+        nums_array = [int(num) for num in nums.split(' ')]
+        if len(nums_array) == length:
+            break
+
+        print(f'Нужно ввести {length} цифр')
+
 
     for num in range(len(nums_array)):
-        if num + k - 1 < len(nums_array):
-            min_num_list = [nums_array[i] for i in range(num, num + k)]
-            print(f'Min num: {min(min_num_list)}')
+        if num + step - 1 < len(nums_array):
+            step_list = [nums_array[i] for i in range(num, num + step)]
+            print(f'Min num: {min(step_list)}')
 
 
 if __name__ == '__main__':
     # bracket_order()
     # count_words_in_text()
     # synonym_dict()
-    min_in_length()
+    # min_in_length()
+    binary_search_tree()
