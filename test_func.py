@@ -135,9 +135,38 @@ def good_string():
     print(f'Максимальная хорошесть строки: {len(set(list_input)) - 1}')
 
 
+def not_three_one_in_a_row():
+    """
+    По данному числу N N определите количество последовательностей
+    из нулей и единиц длины N N, в которых никакие три единицы не стоят рядом.
+
+    Формат ввода
+    Во входном файле написано натуральное число N N, не превосходящее 35 35.
+
+    Формат вывода
+    Выведите количество искомых последовательностей.
+    Гарантируется, что ответ не превосходит 2 ** 31 − 1
+    """
+
+    length = int(input('Введите длину цифр: '))
+
+    a = [2, 4, 7]
+
+    for i in range(3, 36):
+        a.append(a[i - 1] + a[i - 2] + a[i - 3] % 12345)
+    print(a[length - 1])
+
+
+
+def add_more_candies():
+    # pots = int(input('Введите количество банок: '))
+    pots = 4
+
+
 if __name__ == '__main__':
     # bracket_order()
     # count_words_in_text()
     # synonym_dict()
     # min_in_length()
-    good_string()
+    # good_string()
+    not_three_one_in_a_row()
