@@ -1,5 +1,6 @@
 import re
 import sys
+from itertools import count
 
 
 def bracket_order():
@@ -141,21 +142,102 @@ def not_three_one_in_a_row():
     из нулей и единиц длины N N, в которых никакие три единицы не стоят рядом.
 
     Формат ввода
-    Во входном файле написано натуральное число N N, не превосходящее 35 35.
+    Во входном файле написано натуральное число N N, не превосходящее 35
 
     Формат вывода
     Выведите количество искомых последовательностей.
     Гарантируется, что ответ не превосходит 2 ** 31 − 1
     """
-
     length = int(input('Введите длину цифр: '))
 
     a = [2, 4, 7]
 
     for i in range(3, 36):
         a.append(a[i - 1] + a[i - 2] + a[i - 3] % 12345)
+
     print(a[length - 1])
 
+
+def letters_change():
+    """
+    Красотой строки назовем максимальное число идущих подряд одинаковых букв.
+    (красота строки abcaabdddettq равна 3)
+    Сделайте данную вам строку как можно более красивой,
+    если вы можете сделать не более k операций замены символа.
+
+    Формат ввода
+    В первой строке записано одно целое число k
+    Во второй строке дана непустая строчка S
+    Строчка S состоит только из маленьких латинских букв.
+
+    Формат вывода
+    Выведите одно число — максимально возможную красоту строчки,
+    которую можно получить.
+    """
+    change = int(input('Введите количество замен: '))
+    string = input('Введите строку: ')
+
+    num = change
+    list_string = [i for i in string]
+
+    max_nums_list = list()
+
+    count = 1
+
+    for let_1 in range(len(list_string)):
+        if let_1 + 1 < len(list_string):
+
+            for let_2 in range(let_1 + 1, len(list_string)):
+                print(let_1, list_string[let_1])
+                print(let_2, list_string[let_2])
+                if list_string[let_1] == list_string[let_2]:
+                    count += 1
+                else:
+                    if change > 0:
+                        change -= 1
+                        count += 1
+                    else:
+                        break
+
+                if let_2 == len(list_string) - 1:
+                    count += change
+                    break
+
+        max_nums_list.append(count)
+        change = num
+        count = 1
+
+    print(f'Максимально возможная красота строки: {max(max_nums_list)}')
+
+
+def histogram():
+    """
+    В первой строке входного файла записано число N — количество
+    прямоугольников гистограммы. Далее в той же строке
+    записано N целых чисел h. Эти числа обозначают высоты
+    прямоугольников гистограммы слева направо.
+    Ширина каждого прямоугольника равна 1
+
+    Формат вывода
+    Выведите площадь самого большого прямоугольника в гистограмме.
+    Помните, что этот прямоугольник должен быть на общей базовой линии.
+    """
+    data = input('Введите количество прямоугольников и их длину: ').split(' ')
+
+    elem_list = [int(num) for num in data if num != ' ']
+    histograms_count = elem_list.pop(0)
+
+    max_common_area = 0
+
+    for elem in range(len(elem_list)):
+        if elem + 1 < len(elem_list):
+            common_length = min(elem_list[elem], elem_list[elem + 1])
+            area = common_length * 2
+
+            if area > max_common_area:
+                max_common_area = area
+
+    print(f'Площадь самого большого прямоугольника в гистограмме: {max_common_area}')
 
 
 def add_more_candies():
@@ -169,4 +251,6 @@ if __name__ == '__main__':
     # synonym_dict()
     # min_in_length()
     # good_string()
-    not_three_one_in_a_row()
+    # not_three_one_in_a_row()
+    # letters_change()
+    histogram()
