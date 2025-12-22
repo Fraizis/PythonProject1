@@ -1,6 +1,7 @@
 import re
 import sys
 from itertools import count
+from typing import List
 
 
 def bracket_order():
@@ -240,9 +241,143 @@ def histogram():
     print(f'Площадь самого большого прямоугольника в гистограмме: {max_common_area}')
 
 
+def max_multiplication_numbers():
+    """
+    Дан список, заполненный произвольными целыми числами.
+    Найдите в этом списке два числа, произведение которых максимально.
+
+    Формат ввода
+    В единственной строке через пробел вводятся целые числа — элементы списка.
+    Список содержит не менее двух и не более 100 000 чисел.
+    Сами элементы по модулю не превышают 1 000 000.
+
+    Формат вывода
+    Выведите эти два числа в порядке неубывания
+
+    Примечание
+    Решение должно иметь сложность O(n), где n — размер списка.
+    Гарантируется, что во всех тестах ответ однозначен.
+    """
+    num_string = input('Введите числа: ').split(' ')
+
+    array = [int(num) for num in num_string if num != ' ']
+
+    max_multy = 0
+
+    for num_1 in range(len(array)):
+        if num_1 + 1 < len(array):
+            for num_2 in range(num_1 + 1, len(array)):
+                multy = array[num_1] * array[num_2]
+                if multy > max_multy:
+                    max_multy = multy
+                    answer = [array[num_1], array[num_2]]
+
+    if answer[0] > answer[1]:
+        print(answer[1], answer[0])
+    else:
+        print(answer[0], answer[1])
+
+
 def add_more_candies():
+    """
+    У Карлсона дома есть набор из n n банок с конфетами.
+    Банки пронумерованы от 1 до n, в i-й из них лежит a конфет.
+    Карлсон считает набор банок симпатичным,
+    если в этом наборе нет трех банок с разным числом конфет.
+
+    У Карлсона есть неограниченный запас конфет в карманах,
+    поэтому он может добавить в любую банку произвольное число конфет.
+    Помогите ему определить, какое минимальное общее число конфет
+    ему придется добавить, чтобы набор банок с конфетами стал симпатичным.
+
+    Формат ввода
+    Первая строка входных данных содержит натуральное
+    число n — количество банок в наборе Карлсона.
+
+    Вторая строка входных данных содержит n целых
+    чисел a — число конфет в банках.
+    Соседние числа отделены друг от друга одним пробелом.
+
+    Формат вывода
+    Выведите одно число — минимальное общее количество конфет,
+    которое придется добавить, чтобы Карлсон считал набор банок симпатичным.
+
+    Примечание
+    В первом тесте из примера Карлсон может добавить в
+    первую банку две конфеты, а во вторую банку — одну конфету.
+
+    Тогда в первой и четвертой банках будет лежать по 7 конфет,
+    а во второй и третьей — по 2 конфеты.
+
+    Во втором тесте из примера набор банок исходно является симпатичным,
+    добавлять конфеты не требуется
+    """
     # pots = int(input('Введите количество банок: '))
-    pots = 4
+    pots = 6
+    candy_pots = '1 2 3'.split(' ')
+    set_pots = set([int(num) for num in candy_pots])
+
+    if len(set_pots) <= 2:
+        print('Добавлять конфеты не требуется: 0')
+        return
+
+    candy_pots = list(set_pots)
+    print(len(candy_pots))
+
+    for i in range(len(candy_pots)):
+        if i + 1 < len(candy_pots):
+            for j in range(i + 1, len(candy_pots)):
+                if candy_pots[i] > candy_pots[j]:
+                    candy_pots[i], candy_pots[j] = candy_pots[j], candy_pots[i]
+
+    print(candy_pots)
+    mid = len(candy_pots) // 2
+
+    middle_num = candy_pots[mid]
+
+    print(middle_num)
+    candy_pots.pop(mid)
+
+    left_part = candy_pots[:mid]
+    right_part = candy_pots[mid:]
+
+    summ_left = sum_num(middle_num, left_part)
+    summ_right = sum_num(middle_num, right_part)
+
+    if summ_left > summ_right:
+        right_part.append(middle_num)
+    else:
+        left_part.append(middle_num)
+
+    print(left_part)
+    print(right_part)
+
+    left_candies = need_candies_at_one_side(left_part)
+    right_candies = need_candies_at_one_side(right_part)
+
+    total_min = left_candies + right_candies
+
+    print(f'Всего: {total_min}')
+
+
+def need_candies_at_one_side(array: List[int]):
+    max_num = max(array)
+    summary_left = 0
+
+    for num in range(len(array)):
+        summary_left += max_num - array[num]
+
+    print(summary_left)
+    return summary_left
+
+
+def sum_num(num: int, array: List[int]):
+    summ = 0
+
+    for elem in range(len(array)):
+        summ += abs(num - array[elem])
+    print(summ)
+    return summ
 
 
 if __name__ == '__main__':
@@ -253,4 +388,6 @@ if __name__ == '__main__':
     # good_string()
     # not_three_one_in_a_row()
     # letters_change()
-    histogram()
+    # histogram()
+    # max_multiplication_numbers()
+    add_more_candies()
