@@ -1,6 +1,3 @@
-import re
-import sys
-from itertools import count
 from typing import List
 
 
@@ -314,40 +311,30 @@ def add_more_candies():
     """
     # pots = int(input('Введите количество банок: '))
     pots = 6
-    candy_pots = '1 2 3'.split(' ')
-    set_pots = set([int(num) for num in candy_pots])
+    candy_pots_string = '1 1 1'.split(' ')
+    candy_pots = [int(num) for num in candy_pots_string]
+    set_pots = set(candy_pots)
 
     if len(set_pots) <= 2:
         print('Добавлять конфеты не требуется: 0')
         return
 
-    candy_pots = list(set_pots)
-    print(len(candy_pots))
+    min_candy = min(candy_pots)
+    left_part = [min_candy]
+    candy_pots.remove(min_candy)
+
+    max_candy = max(candy_pots)
+    right_part = [max_candy]
+    candy_pots.remove(max_candy)
 
     for i in range(len(candy_pots)):
-        if i + 1 < len(candy_pots):
-            for j in range(i + 1, len(candy_pots)):
-                if candy_pots[i] > candy_pots[j]:
-                    candy_pots[i], candy_pots[j] = candy_pots[j], candy_pots[i]
+        left_val = abs(min_candy - candy_pots[i])
+        right_val = max_candy - candy_pots[i]
 
-    print(candy_pots)
-    mid = len(candy_pots) // 2
-
-    middle_num = candy_pots[mid]
-
-    print(middle_num)
-    candy_pots.pop(mid)
-
-    left_part = candy_pots[:mid]
-    right_part = candy_pots[mid:]
-
-    summ_left = sum_num(middle_num, left_part)
-    summ_right = sum_num(middle_num, right_part)
-
-    if summ_left > summ_right:
-        right_part.append(middle_num)
-    else:
-        left_part.append(middle_num)
+        if left_val < right_val:
+            left_part.append(candy_pots[i])
+        else:
+            right_part.append(candy_pots[i])
 
     print(left_part)
     print(right_part)
@@ -367,17 +354,7 @@ def need_candies_at_one_side(array: List[int]):
     for num in range(len(array)):
         summary_left += max_num - array[num]
 
-    print(summary_left)
     return summary_left
-
-
-def sum_num(num: int, array: List[int]):
-    summ = 0
-
-    for elem in range(len(array)):
-        summ += abs(num - array[elem])
-    print(summ)
-    return summ
 
 
 if __name__ == '__main__':
