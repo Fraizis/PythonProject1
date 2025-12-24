@@ -309,9 +309,15 @@ def add_more_candies():
     Во втором тесте из примера набор банок исходно является симпатичным,
     добавлять конфеты не требуется
     """
-    # pots = int(input('Введите количество банок: '))
-    pots = 6
-    candy_pots_string = '1 1 1'.split(' ')
+    pots = int(input('Введите количество банок: '))
+
+    while True:
+        candy_pots_string = input('Введите количество конфет в банках: ').split(' ')
+        if len(candy_pots_string) == pots:
+            break
+
+        print(f'Нужно ввести количество конфет в каждой из {pots} банок\n')
+
     candy_pots = [int(num) for num in candy_pots_string]
     set_pots = set(candy_pots)
 
@@ -336,15 +342,12 @@ def add_more_candies():
         else:
             right_part.append(candy_pots[i])
 
-    print(left_part)
-    print(right_part)
-
     left_candies = need_candies_at_one_side(left_part)
     right_candies = need_candies_at_one_side(right_part)
 
     total_min = left_candies + right_candies
 
-    print(f'Всего: {total_min}')
+    print(f'Нужно добавить конфет: {total_min}')
 
 
 def need_candies_at_one_side(array: List[int]):
