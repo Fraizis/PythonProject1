@@ -1,8 +1,4 @@
 def data_centers():
-    """
-    Решение 5 задания
-    E. Датацентры
-    """
     data_centers_cables_count = input().split(' ')
 
     data_cables = list(map(int, data_centers_cables_count))

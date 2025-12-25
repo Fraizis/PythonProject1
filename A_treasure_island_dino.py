@@ -1,8 +1,6 @@
 def max_treasure_value() -> None:
-    """
-    Решение 1 задания
-    A. Сокровища островов пирата Дино
-    """
+
+
     islands_tunnels_count = input().split(' ')
 
     island_tunnels = list(map(int, islands_tunnels_count))
@@ -30,18 +28,23 @@ def max_treasure_value() -> None:
 
     if tunnels_count != 0:
 
-        for num in range(len(tunnels)):
-            if num + 1 < len(tunnels):
-                if tunnels[num][0] not in visited_isles:
-                    first_isl = tunnels[num][0]
-                    second_isl = tunnels[num][1]
+        for num_1 in range(len(tunnels) - 1):
+            for num_2 in range(num_1 + 1, len(tunnels)):
+                    print(tunnels[num_1], tunnels[num_2])
 
-                    total_value += treasures[num + 1]
-
-                    visited_isles.append(first_isl)
-
-                    if second_isl not in tunnels[num + 1]:
-                        break
+                # if tunnels[num_1][0] not in visited_isles:
+                #
+                #     print(tunnels[num_1], tunnels[num_2])
+                #
+                #     first_isl = tunnels[num_1][0]
+                #     second_isl = tunnels[num_1][1]
+                #
+                #     total_value += treasures[num_2]
+                #
+                #     visited_isles.append(first_isl)
+                #
+                #     if second_isl not in tunnels[num + 1]:
+                #         break
 
     print(total_value or 0)
 
