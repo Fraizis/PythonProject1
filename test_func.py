@@ -360,6 +360,24 @@ def need_candies_at_one_side(array: List[int]):
     return summary_left
 
 
+def section_cover():
+    sections = 4
+    array = ['1', '2', '3', '6', '8', '9', '14', '15']
+
+    count = 0
+    print(len(array) % sections)
+    print(array[len(array) // sections])
+
+    num = round(len(array) / sections)
+
+    print(len(array) / sections)
+
+    print([array[i:i + num] for i in range(0, len(array), num)])
+
+    for i in range(len(array)):
+        ...
+
+
 if __name__ == '__main__':
     # bracket_order()
     # count_words_in_text()
@@ -370,4 +388,5 @@ if __name__ == '__main__':
     # letters_change()
     # histogram()
     # max_multiplication_numbers()
-    add_more_candies()
+    # add_more_candies()
+    section_cover()
