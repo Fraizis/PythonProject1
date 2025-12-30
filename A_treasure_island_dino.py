@@ -1,3 +1,6 @@
+from typing import List
+
+
 def max_treasure_value() -> None:
     """
     Решение 1 задания
@@ -148,7 +151,6 @@ def max_treasure_value() -> None:
                 print(' ', tunnels[num_2])
 
                 if tunnels[num_1][0] and tunnels[num_1][1] not in visited_isles:
-
                     first_isl = tunnels[num_1][0]
                     second_isl = tunnels[num_1][1]
 
@@ -165,5 +167,61 @@ def max_treasure_value() -> None:
     print(total_value or 0)
 
 
+def island_walk(
+        next_isl: int,
+        islands_list: List[List[int]],
+        treasures: List[int],
+        total_amount_list: List[int] = None,
+        visited_isl: List[int] = None,
+        total_amount: int = 0,
+):
+    if total_amount_list is None:
+        total_amount_list = list()
+
+    if visited_isl is None:
+        visited_isl = list()
+
+    for i in range(len(islands_list)):
+        for isl in range(len(islands_list)):
+            if next_isl in islands_list[isl]:
+
+                if next_isl not in visited_isl:
+
+                    total_amount += treasures[next_isl - 1]
+                    visited_isl.append(next_isl)
+                    if islands_list[isl].index(next_isl) == 0:
+                        next_isl = islands_list[isl][1]
+                    else:
+                        next_isl = islands_list[isl][0]
+
+                    if next_isl in visited_isl:
+                        next_isl += 1
+
+                    # new_amount = island_walk(
+                    #     next_isl=next_isl,
+                    #     islands_list=islands_list,
+                    #     treasures=treasures,
+                    #     total_amount=total_amount,
+                    #     visited_isl=visited_isl,
+                    #     total_amount_list=total_amount_list,
+                    # )
+        total_amount += treasures[next_isl - 1]
+        visited_isl.append(next_isl)
+        total_amount_list.append(total_amount)
+        total_amount = 0
+        next_isl = 1
+
+    return total_amount_list
+
+
 if __name__ == '__main__':
-    max_treasure_value()
+    # max_treasure_value()
+    new_list = [[1, 2], [2, 3], [4, 5], [1, 6], [4, 6], [5, 7]]
+    treasure_values = [10, 30, 20, 5, 5, 15, 35]
+    treasures = island_walk(
+        next_isl=1,
+        islands_list=new_list,
+        treasures=treasure_values,
+    )
+
+    print(treasures)
