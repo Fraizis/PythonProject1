@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 
@@ -378,6 +379,76 @@ def section_cover():
         ...
 
 
+def binary_search(num: int, array: List[int]):
+    array = sorted(array)
+
+    low = 0
+    high = len(array) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        search = array[mid]
+
+        if search == num:
+            return mid
+
+        elif search > num:
+            high = mid - 1
+        else:
+            low = mid + 1
+
+    print('None')
+    return
+
+
+def binary_search_train_array():
+    """
+    Формат ввода
+    В первой строке входных данных содержатся натуральные
+    числа N и K (0<N,K≤100000). Во второй строке задаются N
+    элементов первого массива, а в третьей строке – K элементов
+    второго массива. Элементы обоих массивов - целые числа
+
+    Формат вывода
+    Требуется для каждого из K чисел вывести в отдельную строку "YES",
+    если это число встречается в первом массиве, и "NO" в противном случае.
+    :return:
+    10 10
+    1 61 126 217 2876 6127 39162 98126 712687 1000000000
+    100 6127 1 61 200 -10000 1 217 10000 100000000
+
+    1 2 3 4 5 6 7 8 9 10
+    -2 0 4 9 12
+    """
+    first_string = list(map(int, '10 10'.split(' ')))
+    array_1 = sorted(list(map(int, '1 2 3 4 5 6 7 8 9 10'.split(' '))))
+    array_2 = sorted(list(map(int, '-2 0 4 9 12'.split(' '))))
+
+    for num in array_2:
+        print(binary_search_func(num, array_1, 0, len(array_1) - 1))
+
+
+def binary_search_func(
+        search: int,
+        array: List[int],
+        left: int,
+        right: int,
+):
+    if left > right:
+        return 'NO'
+
+    mid = (left + right) // 2
+    guess = array[mid]
+
+    if guess == search:
+        return 'YES'
+
+    elif guess > search:
+        return binary_search_func(search, array, left, mid - 1)
+    else:
+        return binary_search_func(search, array, mid + 1, right)
+
+
 if __name__ == '__main__':
     # bracket_order()
     # count_words_in_text()
@@ -389,4 +460,6 @@ if __name__ == '__main__':
     # histogram()
     # max_multiplication_numbers()
     # add_more_candies()
-    section_cover()
+    # section_cover()
+    # binary_search(num=3, array=[i for i in range(1, 101)])
+    binary_search_train_array()
