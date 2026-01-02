@@ -379,28 +379,6 @@ def section_cover():
         ...
 
 
-def binary_search(num: int, array: List[int]):
-    array = sorted(array)
-
-    low = 0
-    high = len(array) - 1
-
-    while low <= high:
-        mid = (low + high) // 2
-        search = array[mid]
-
-        if search == num:
-            return mid
-
-        elif search > num:
-            high = mid - 1
-        else:
-            low = mid + 1
-
-    print('None')
-    return
-
-
 def binary_search_train_array():
     """
     Формат ввода
@@ -425,10 +403,31 @@ def binary_search_train_array():
     array_2 = sorted(list(map(int, '-2 0 4 9 12'.split(' '))))
 
     for num in array_2:
-        print(binary_search_func(num, array_1, 0, len(array_1) - 1))
+        print(binary_search_recursion(num, array_1, 0, len(array_1) - 1))
 
 
-def binary_search_func(
+def binary_search(num: int, array: List[int]):
+    array = sorted(array)
+
+    low = 0
+    high = len(array) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        search = array[mid]
+
+        if search == num:
+            return 'YES'
+
+        elif search > num:
+            high = mid - 1
+        else:
+            low = mid + 1
+
+    return 'NO'
+
+
+def binary_search_recursion(
         search: int,
         array: List[int],
         left: int,
@@ -443,13 +442,50 @@ def binary_search_func(
     if guess == search:
         return 'YES'
 
-    elif guess > search:
-        return binary_search_func(search, array, left, mid - 1)
+    if guess > search:
+        return binary_search_recursion(search, array, left, mid - 1)
     else:
-        return binary_search_func(search, array, mid + 1, right)
+        return binary_search_recursion(search, array, mid + 1, right)
+
+
+def sort_by_choose(array):
+    sorted_arr = []
+    for elem in range(len(array)):
+        min_elem = find_min_elem_in_array(array)
+        sorted_arr.append(array.pop(min_elem))
+
+    print(sorted_arr)
+
+
+def find_min_elem_in_array(arr):
+    min_elem = arr[0]
+    min_index = 0
+    for i in range(1, len(arr)):
+        if arr[i] < min_elem:
+            min_elem = arr[i]
+            min_index = i
+
+    return min_index
+
+
+class Solution:
+    def repeatedNTimes(self, nums: List[int]) -> int:
+        rep_times = len(nums) // 2
+
+        count_dict = {}
+        for i in range(len(nums)):
+            if nums[i] in count_dict:
+                count_dict[nums[i]] += 1
+            else:
+                count_dict[nums[i]] = 1
+
+        for key, value in count_dict.items():
+            if value == rep_times:
+                return key
 
 
 if __name__ == '__main__':
+    array = [5, 3, 1, 11, 15, 7, 2]
     # bracket_order()
     # count_words_in_text()
     # synonym_dict()
@@ -461,5 +497,9 @@ if __name__ == '__main__':
     # max_multiplication_numbers()
     # add_more_candies()
     # section_cover()
-    # binary_search(num=3, array=[i for i in range(1, 101)])
-    binary_search_train_array()
+    # binary_search(num=3, array=array)
+    # binary_search_train_array()
+    # sort_by_choose(array)
+    nums = [1, 2, 3, 3]
+    sol = Solution()
+    print(sol.repeatedNTimes(nums))
