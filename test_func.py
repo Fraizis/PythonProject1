@@ -361,114 +361,89 @@ def need_candies_at_one_side(array: List[int]):
     return summary_left
 
 
-def section_cover():
-    sections = 4
-    array = ['1', '2', '3', '6', '8', '9', '14', '15']
+class BinarySearch:
+    def binary_search_train_array(self):
+        """
+        Формат ввода
+        В первой строке входных данных содержатся натуральные
+        числа N и K (0<N,K≤100000). Во второй строке задаются N
+        элементов первого массива, а в третьей строке – K элементов
+        второго массива. Элементы обоих массивов - целые числа
 
-    count = 0
-    print(len(array) % sections)
-    print(array[len(array) // sections])
+        Формат вывода
+        Требуется для каждого из K чисел вывести в отдельную строку "YES",
+        если это число встречается в первом массиве, и "NO" в противном случае.
+        """
+        first_string = list(map(int, '10 10'.split(' ')))
+        array_1 = sorted(list(map(int, '1 2 3 4 5 6 7 8 9 10'.split(' '))))
+        array_2 = sorted(list(map(int, '-2 0 4 9 12'.split(' '))))
 
-    num = round(len(array) / sections)
+        for num in array_2:
+            print(self.binary_search_recursion(num, array_1, 0, len(array_1) - 1))
 
-    print(len(array) / sections)
+    def binary_search(self, num: int, array: List[int]):
+        array = sorted(array)
 
-    print([array[i:i + num] for i in range(0, len(array), num)])
+        low = 0
+        high = len(array) - 1
 
-    for i in range(len(array)):
-        ...
+        while low <= high:
+            mid = (low + high) // 2
+            search = array[mid]
 
+            if search == num:
+                return 'YES'
 
-def binary_search_train_array():
-    """
-    Формат ввода
-    В первой строке входных данных содержатся натуральные
-    числа N и K (0<N,K≤100000). Во второй строке задаются N
-    элементов первого массива, а в третьей строке – K элементов
-    второго массива. Элементы обоих массивов - целые числа
+            elif search > num:
+                high = mid - 1
+            else:
+                low = mid + 1
 
-    Формат вывода
-    Требуется для каждого из K чисел вывести в отдельную строку "YES",
-    если это число встречается в первом массиве, и "NO" в противном случае.
-    :return:
-    10 10
-    1 61 126 217 2876 6127 39162 98126 712687 1000000000
-    100 6127 1 61 200 -10000 1 217 10000 100000000
-
-    1 2 3 4 5 6 7 8 9 10
-    -2 0 4 9 12
-    """
-    first_string = list(map(int, '10 10'.split(' ')))
-    array_1 = sorted(list(map(int, '1 2 3 4 5 6 7 8 9 10'.split(' '))))
-    array_2 = sorted(list(map(int, '-2 0 4 9 12'.split(' '))))
-
-    for num in array_2:
-        print(binary_search_recursion(num, array_1, 0, len(array_1) - 1))
-
-
-def binary_search(num: int, array: List[int]):
-    array = sorted(array)
-
-    low = 0
-    high = len(array) - 1
-
-    while low <= high:
-        mid = (low + high) // 2
-        search = array[mid]
-
-        if search == num:
-            return 'YES'
-
-        elif search > num:
-            high = mid - 1
-        else:
-            low = mid + 1
-
-    return 'NO'
-
-
-def binary_search_recursion(
-        search: int,
-        array: List[int],
-        left: int,
-        right: int,
-):
-    if left > right:
         return 'NO'
 
-    mid = (left + right) // 2
-    guess = array[mid]
+    def binary_search_recursion(
+            self,
+            search: int,
+            array: List[int],
+            left: int,
+            right: int,
+    ):
+        if left > right:
+            return 'NO'
 
-    if guess == search:
-        return 'YES'
+        mid = (left + right) // 2
+        guess = array[mid]
 
-    if guess > search:
-        return binary_search_recursion(search, array, left, mid - 1)
-    else:
-        return binary_search_recursion(search, array, mid + 1, right)
+        if guess == search:
+            return 'YES'
 
-
-def sort_by_choose(array):
-    sorted_arr = []
-    for elem in range(len(array)):
-        min_elem = find_min_elem_in_array(array)
-        sorted_arr.append(array.pop(min_elem))
-
-    print(sorted_arr)
-
-
-def find_min_elem_in_array(arr):
-    min_elem = arr[0]
-    min_index = 0
-    for i in range(1, len(arr)):
-        if arr[i] < min_elem:
-            min_elem = arr[i]
-            min_index = i
-
-    return min_index
+        if guess > search:
+            return self.binary_search_recursion(search, array, left, mid - 1)
+        else:
+            return self.binary_search_recursion(search, array, mid + 1, right)
 
 
-class Solution:
+class Sorting:
+    def sort_by_choose(self, array):
+        sorted_arr = []
+        for elem in range(len(array)):
+            min_elem = self.find_min_elem_in_array(array)
+            sorted_arr.append(array.pop(min_elem))
+
+        print(sorted_arr)
+
+    def find_min_elem_in_array(self, arr):
+        min_elem = arr[0]
+        min_index = 0
+        for i in range(1, len(arr)):
+            if arr[i] < min_elem:
+                min_elem = arr[i]
+                min_index = i
+
+        return min_index
+
+
+class RepeatedNTimes:
     def repeatedNTimes(self, nums: List[int]) -> int:
         rep_times = len(nums) // 2
 
@@ -486,6 +461,8 @@ class Solution:
 
 if __name__ == '__main__':
     array = [5, 3, 1, 11, 15, 7, 2]
+
+
     # bracket_order()
     # count_words_in_text()
     # synonym_dict()
@@ -500,6 +477,15 @@ if __name__ == '__main__':
     # binary_search(num=3, array=array)
     # binary_search_train_array()
     # sort_by_choose(array)
-    nums = [1, 2, 3, 3]
-    sol = Solution()
-    print(sol.repeatedNTimes(nums))
+    # nums = [1, 2, 3, 3]
+    # sol = Solution()
+    # print(sol.repeatedNTimes(nums))
+
+    def fact(x):
+        if x == 1:
+            return 1
+        else:
+            return x * fact(x - 1)
+
+
+    print(fact(5))

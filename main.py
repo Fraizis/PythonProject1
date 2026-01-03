@@ -8,7 +8,7 @@ def home_api():
     return render_template('form_1.html')
 
 
-@app.route('/api/hello', methods=['POST'])
+@app.route('/api/hello', methods=['GET', 'POST'])
 def hello():
     data = request.json
     processed_data = {'message': 'Привет, ' + data['name']}

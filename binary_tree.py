@@ -33,7 +33,6 @@ class Tree:
         return max(self.get_height(root.left), self.get_height(root.right)) + 1
 
 
-
 if __name__ == '__main__':
     tree = Tree()
     root = Node(7)
