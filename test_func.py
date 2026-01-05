@@ -1,5 +1,5 @@
 import time
-from typing import List
+from typing import List, Optional
 
 
 def bracket_order():
@@ -459,33 +459,79 @@ class RepeatedNTimes:
                 return key
 
 
+class FindSums:
+    """
+    [2,7,11,15]
+    9
+    [0, 1]
+    [3,2,4]
+    6
+    [1, 2]
+    [3,3]
+    6
+    [0, 1]
+    """
+
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        for i in range(len(nums) - 1):
+            for j in range(i + 1, len(nums)):
+                if target == nums[i] + nums[j]:
+                    answer = [i, j]
+                    break
+
+        return answer
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def reverse(self):
+        prev = None
+        current = self.head
+        while current is not None:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+
+        self.head = prev
+
+    def push(self, new_data):
+        new_node = ListNode(new_data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def printList(self):
+        temp = self.head
+        while (temp):
+            print(temp.val, end=" ")
+            temp = temp.next
+
+
+def traverse(node):
+    new_list = ''
+    while node:
+        new_list = str(node.val) + new_list
+        node = node.next
+
+    return int(new_list)
+
+
+def traverse_answer(head):
+    # Traverse the linked list and print its elements
+    current = head
+    while current:
+        print(current.val, end=" ")
+        current = current.next
+
+
 if __name__ == '__main__':
-    array = [5, 3, 1, 11, 15, 7, 2]
-
-
-    # bracket_order()
-    # count_words_in_text()
-    # synonym_dict()
-    # min_in_length()
-    # good_string()
-    # not_three_one_in_a_row()
-    # letters_change()
-    # histogram()
-    # max_multiplication_numbers()
-    # add_more_candies()
-    # section_cover()
-    # binary_search(num=3, array=array)
-    # binary_search_train_array()
-    # sort_by_choose(array)
-    # nums = [1, 2, 3, 3]
-    # sol = Solution()
-    # print(sol.repeatedNTimes(nums))
-
-    def fact(x):
-        if x == 1:
-            return 1
-        else:
-            return x * fact(x - 1)
-
-
-    print(fact(5))
+    array = [5, 3, 1, 11, 15, 7, 2, 14, 8, 23, 51]
+    nums = [2, 7, 11, 15]
