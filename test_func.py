@@ -361,68 +361,6 @@ def need_candies_at_one_side(array: List[int]):
     return summary_left
 
 
-class BinarySearch:
-    def binary_search_train_array(self):
-        """
-        Формат ввода
-        В первой строке входных данных содержатся натуральные
-        числа N и K (0<N,K≤100000). Во второй строке задаются N
-        элементов первого массива, а в третьей строке – K элементов
-        второго массива. Элементы обоих массивов - целые числа
-
-        Формат вывода
-        Требуется для каждого из K чисел вывести в отдельную строку "YES",
-        если это число встречается в первом массиве, и "NO" в противном случае.
-        """
-        first_string = list(map(int, '10 10'.split(' ')))
-        array_1 = sorted(list(map(int, '1 2 3 4 5 6 7 8 9 10'.split(' '))))
-        array_2 = sorted(list(map(int, '-2 0 4 9 12'.split(' '))))
-
-        for num in array_2:
-            print(self.binary_search_recursion(num, array_1, 0, len(array_1) - 1))
-
-    def binary_search(self, num: int, array: List[int]):
-        array = sorted(array)
-
-        low = 0
-        high = len(array) - 1
-
-        while low <= high:
-            mid = (low + high) // 2
-            search = array[mid]
-
-            if search == num:
-                return 'YES'
-
-            elif search > num:
-                high = mid - 1
-            else:
-                low = mid + 1
-
-        return 'NO'
-
-    def binary_search_recursion(
-            self,
-            search: int,
-            array: List[int],
-            left: int,
-            right: int,
-    ):
-        if left > right:
-            return 'NO'
-
-        mid = (left + right) // 2
-        guess = array[mid]
-
-        if guess == search:
-            return 'YES'
-
-        if guess > search:
-            return self.binary_search_recursion(search, array, left, mid - 1)
-        else:
-            return self.binary_search_recursion(search, array, mid + 1, right)
-
-
 class Sorting:
     def sort_by_choose(self, array):
         sorted_arr = []
@@ -482,56 +420,19 @@ class FindSums:
         return answer
 
 
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-
-class LinkedList:
-    def __init__(self):
-        self.head = None
-
-    def reverse(self):
-        prev = None
-        current = self.head
-        while current is not None:
-            next = current.next
-            current.next = prev
-            prev = current
-            current = next
-
-        self.head = prev
-
-    def push(self, new_data):
-        new_node = ListNode(new_data)
-        new_node.next = self.head
-        self.head = new_node
-
-    def printList(self):
-        temp = self.head
-        while (temp):
-            print(temp.val, end=" ")
-            temp = temp.next
-
-
-def traverse(node):
-    while node:
-        print(node.val, end=" ")
-        node = node.next
-
-
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        left = 0
-        new_set = set()
-        max_length = 0
-
         if s:
+
+            left = 0
+            new_set = set()
+            max_length = 0
+
             for n in range(len(s)):
                 if s[n] not in new_set:
                     new_set.add(s[n])
                     new_max = n - left + 1
+
                     if max_length < new_max:
                         max_length = new_max
                 else:
@@ -550,4 +451,4 @@ if __name__ == '__main__':
     array = [5, 3, 1, 11, 15, 7, 2, 14, 8, 23, 51]
     nums = [2, 7, 11, 15]
     sol = Solution()
-    print(sol.lengthOfLongestSubstring('abcabcabb'))
+    print(sol.lengthOfLongestSubstring(''))
