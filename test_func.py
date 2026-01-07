@@ -516,22 +516,38 @@ class LinkedList:
 
 
 def traverse(node):
-    new_list = ''
     while node:
-        new_list = str(node.val) + new_list
+        print(node.val, end=" ")
         node = node.next
 
-    return int(new_list)
 
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        left = 0
+        new_set = set()
+        max_length = 0
 
-def traverse_answer(head):
-    # Traverse the linked list and print its elements
-    current = head
-    while current:
-        print(current.val, end=" ")
-        current = current.next
+        if s:
+            for n in range(len(s)):
+                if s[n] not in new_set:
+                    new_set.add(s[n])
+                    new_max = n - left + 1
+                    if max_length < new_max:
+                        max_length = new_max
+                else:
+                    while s[n] in new_set:
+                        new_set.remove(s[left])
+                        left += 1
+
+                    new_set.add(s[n])
+
+            return max_length
+
+        return 0
 
 
 if __name__ == '__main__':
     array = [5, 3, 1, 11, 15, 7, 2, 14, 8, 23, 51]
     nums = [2, 7, 11, 15]
+    sol = Solution()
+    print(sol.lengthOfLongestSubstring('abcabcabb'))
