@@ -1,10 +1,7 @@
-import time
 from typing import List, Optional
 
 
-def bracket_order():
-    """
-    """
+def bracket_order() -> str:
     text = input('Введите скобочную последовательность: ')
 
     while '()' in text or '[]' in text or '{}' in text:
@@ -13,12 +10,12 @@ def bracket_order():
         text = text.replace('{}', '')
 
     if len(text) == 0:
-        print('yes')
+        return 'yes'
     else:
-        print('no')
+        return 'no'
 
 
-def count_words_in_text() -> None:
+def count_words_in_text() -> int:
     """
     Во входном файле записан текст. Словом считается
     последовательность непробельных символов идущих подряд, слова
@@ -34,10 +31,10 @@ def count_words_in_text() -> None:
     example_2 = 'AA aa Aa aA'
     example_3 = 'a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a'
     answer = len(set(example_1.split(' ')))
-    print(answer)
+    return answer
 
 
-def synonym_dict() -> None:
+def synonym_dict() -> str:
     """
     Вам дан словарь, состоящий из пар слов.
     Каждое слово является синонимом к парному ему слову.
@@ -65,14 +62,14 @@ def synonym_dict() -> None:
         elif word == value:
             word_syn = key
 
-    print(word_syn)
+    return word_syn
 
 
 def min_in_length():
     """
     Рассмотрим последовательность целых чисел длины n n.
-    По ней двигается «окно» длины k k: сначала в «окне» находятся первые k k чисел,
-    на следующем шаге в «окне» уже будут находиться k k чисел, начиная со второго,
+    По ней двигается «окно» длины k : сначала в «окне» находятся первые k чисел,
+    на следующем шаге в «окне» уже будут находиться k чисел, начиная со второго,
     и так далее до конца последовательности.
     Требуется для каждого положения «окна» определить минимум в нём.
 
@@ -90,6 +87,8 @@ def min_in_length():
     length = int(input(f'Введите количество цифр:'))
     step = int(input(f'Введите шаг:'))
 
+    min_in_step = []
+
     while True:
         nums = input(f'Введите {length} цифр:')
         nums_array = [int(num) for num in nums.split(' ')]
@@ -101,7 +100,9 @@ def min_in_length():
     for num in range(len(nums_array)):
         if num + step - 1 < len(nums_array):
             step_list = [nums_array[i] for i in range(num, num + step)]
-            print(f'Min num: {min(step_list)}')
+            min_in_step.append(min(step_list))
+
+    return min_in_step
 
 
 def good_string():
@@ -132,13 +133,13 @@ def good_string():
         int(input(f'Введите количество {let + 1} буквы: '))
         list_input += alphabet[let]
 
-    print(f'Максимальная хорошесть строки: {len(set(list_input)) - 1}')
+    return f'Максимальная хорошесть строки: {len(set(list_input)) - 1}'
 
 
 def not_three_one_in_a_row():
     """
-    По данному числу N N определите количество последовательностей
-    из нулей и единиц длины N N, в которых никакие три единицы не стоят рядом.
+    По данному числу N определите количество последовательностей
+    из нулей и единиц длины N, в которых никакие три единицы не стоят рядом.
 
     Формат ввода
     Во входном файле написано натуральное число N N, не превосходящее 35
@@ -154,7 +155,7 @@ def not_three_one_in_a_row():
     for i in range(3, 36):
         a.append(a[i - 1] + a[i - 2] + a[i - 3] % 12345)
 
-    print(a[length - 1])
+    return a[length - 1]
 
 
 def letters_change():
@@ -183,24 +184,21 @@ def letters_change():
 
     count = 1
 
-    for let_1 in range(len(list_string)):
-        if let_1 + 1 < len(list_string):
+    for let_1 in range(len(list_string) - 1):
 
-            for let_2 in range(let_1 + 1, len(list_string)):
-                print(let_1, list_string[let_1])
-                print(let_2, list_string[let_2])
-                if list_string[let_1] == list_string[let_2]:
+        for let_2 in range(let_1 + 1, len(list_string)):
+            if list_string[let_1] == list_string[let_2]:
+                count += 1
+            else:
+                if change > 0:
+                    change -= 1
                     count += 1
                 else:
-                    if change > 0:
-                        change -= 1
-                        count += 1
-                    else:
-                        break
-
-                if let_2 == len(list_string) - 1:
-                    count += change
                     break
+
+            if let_2 == len(list_string) - 1:
+                count += change
+                break
 
         max_nums_list.append(count)
         change = num
@@ -361,26 +359,6 @@ def need_candies_at_one_side(array: List[int]):
     return summary_left
 
 
-class Sorting:
-    def sort_by_choose(self, array):
-        sorted_arr = []
-        for elem in range(len(array)):
-            min_elem = self.find_min_elem_in_array(array)
-            sorted_arr.append(array.pop(min_elem))
-
-        print(sorted_arr)
-
-    def find_min_elem_in_array(self, arr):
-        min_elem = arr[0]
-        min_index = 0
-        for i in range(1, len(arr)):
-            if arr[i] < min_elem:
-                min_elem = arr[i]
-                min_index = i
-
-        return min_index
-
-
 class RepeatedNTimes:
     def repeatedNTimes(self, nums: List[int]) -> int:
         rep_times = len(nums) // 2
@@ -420,35 +398,82 @@ class FindSums:
         return answer
 
 
-class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        if s:
-
-            left = 0
-            new_set = set()
-            max_length = 0
-
-            for n in range(len(s)):
-                if s[n] not in new_set:
-                    new_set.add(s[n])
-                    new_max = n - left + 1
-
-                    if max_length < new_max:
-                        max_length = new_max
-                else:
-                    while s[n] in new_set:
-                        new_set.remove(s[left])
-                        left += 1
-
-                    new_set.add(s[n])
-
-            return max_length
-
+def length_of_longest_substring(s: str) -> int:
+    if not s:
         return 0
+
+    left = 0
+    new_set = set()
+    max_length = 0
+
+    for n in range(len(s)):
+        if s[n] not in new_set:
+            new_set.add(s[n])
+            new_max = n - left + 1
+
+            if max_length < new_max:
+                max_length = new_max
+        else:
+            while s[n] in new_set:
+                new_set.remove(s[left])
+                left += 1
+
+            new_set.add(s[n])
+
+    return max_length
+
+
+def median_two_arrays(num_1: List[int], num_2: List[int]) -> float:
+    nums = num_1 + num_2
+
+    if len(nums) == 1:
+        return nums[0]
+    elif len(nums) == 2:
+        return (nums[0] + nums[1]) / 2
+
+    if len(num_1) > 0 and len(num_2) > 0:
+        left_max = num_1[len(num_1) - 1]
+        right_min = num_2[0]
+
+        if left_max > right_min:
+            nums = sorted(nums)
+
+    if len(nums) % 2 == 0:
+        first_mid = nums[len(nums) // 2 - 1]
+        second_mid = nums[len(nums) // 2]
+        mid = (first_mid + second_mid) / 2
+
+        return mid
+    else:
+        mid = nums[len(nums) // 2]
+        return mid
+
+
+def fibonacci_func(n):
+    fib_l = [0, 1]
+
+    for i in range(n + 1):
+        fib_l.append(fib_l[-1] + fib_l[-2])
+
+    return fib_l
+
+def longest_palindromic_substring(s: str):
+    longest_sub_str = ''
+
+    if len(s) <= 1:
+        return s
+
+    for i in range(len(s) - 1):
+        for j in range(i, len(s)):
+            new_sub = s[i:j + 1]
+
+            if new_sub == new_sub[::-1] and len(longest_sub_str) < len(new_sub):
+                    longest_sub_str = s[i:j + 1]
+
+    return longest_sub_str
 
 
 if __name__ == '__main__':
-    array = [5, 3, 1, 11, 15, 7, 2, 14, 8, 23, 51]
+    array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    sol = Solution()
-    print(sol.lengthOfLongestSubstring(''))
+    print(longest_palindromic_substring('bb'))
