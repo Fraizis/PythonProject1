@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List, Optional
 
 
@@ -457,23 +458,52 @@ def fibonacci_func(n):
 
     return fib_l
 
+
 def longest_palindromic_substring(s: str):
     longest_sub_str = ''
+    max_str = 0
 
     if len(s) <= 1:
         return s
 
     for i in range(len(s) - 1):
         for j in range(i, len(s)):
-            new_sub = s[i:j + 1]
+            if s[i] == s[j]:
+                new_sub = s[i:j + 1]
 
-            if new_sub == new_sub[::-1] and len(longest_sub_str) < len(new_sub):
+                if new_sub == new_sub[::-1] and max_str < len(new_sub):
                     longest_sub_str = s[i:j + 1]
+                    max_str = len(new_sub)
 
     return longest_sub_str
+
+
+def search_que(start, graph=None):
+    if graph is None:
+        return 'No graph added'
+
+    q = deque()
+    q.extend(graph[start])
+    searched = set()
+
+    while q:
+        print(q)
+        point = q.popleft()
+        print(point)
+        if mango_seller(point):
+            return f'Found mango seller {point}'
+        else:
+            q.extend(graph[point])
+            searched.add(point)
+
+    return 'No mango seller found'
+
+
+def mango_seller(name):
+    return name[-1] == 'm'
 
 
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    print(longest_palindromic_substring('bb'))
+    print(search_que(1))
