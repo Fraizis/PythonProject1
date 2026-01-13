@@ -1,4 +1,7 @@
+import os
 from collections import deque
+from os import listdir
+from os.path import isfile, join
 from typing import List, Optional
 
 
@@ -490,6 +493,7 @@ def search_que(start, graph=None):
         print(q)
         point = q.popleft()
         print(point)
+
         if mango_seller(point):
             return f'Found mango seller {point}'
         else:
@@ -503,7 +507,52 @@ def mango_seller(name):
     return name[-1] == 'm'
 
 
+def print_names(start_dir):
+    search_queue = deque()
+    search_queue.append(start_dir)
+
+    while search_queue:
+        dir = search_queue.popleft()
+        for file in sorted(listdir(dir)):
+            fullpath = join(dir, file)
+
+            if isfile(fullpath):
+                print(file)
+            else:
+                search_queue.append(fullpath)
+
+
+def printnames(dir):
+    for file in sorted(listdir(dir)):
+        fullpath = join(dir, file)
+        if isfile(fullpath):
+            print(file)
+        else:
+            printnames(fullpath)
+
+
+
+def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]
+    while stack:
+        vertex = stack.pop()
+        if vertex not in visited:
+            visited.add(vertex)
+            print(vertex, end=' ')
+
+        # Добавляем соседей в стек (в обратном порядке для правильного обхода)
+
+        for neighbor in reversed(graph[vertex]):
+            if neighbor not in visited:
+                stack.append(neighbor)
+
+
+
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    print(search_que(1))
+
+    graph = {"A": ["B", "C"], "B": ["A", "D", "E"], "C": ["A", "F"], "D": ["B"], "E": ["B", "F"], "F": ["C", "E"]}
+    dfs_iterative(graph, 'A')
+    # Результат: A B C D E F
