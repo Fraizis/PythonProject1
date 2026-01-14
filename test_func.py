@@ -541,11 +541,9 @@ def dfs_iterative(graph, start):
             visited.add(vertex)
             print(vertex, end=' ')
 
-        # Добавляем соседей в стек (в обратном порядке для правильного обхода)
-
-        for neighbor in reversed(graph[vertex]):
-            if neighbor not in visited:
-                stack.append(neighbor)
+            for neighbor in reversed(graph[vertex]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
 
 
 
