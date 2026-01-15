@@ -1,4 +1,5 @@
 import os
+import time
 from collections import deque
 from os import listdir
 from os.path import isfile, join
@@ -531,7 +532,6 @@ def printnames(dir):
             printnames(fullpath)
 
 
-
 def dfs_iterative(graph, start):
     visited = set()
     stack = [start]
@@ -546,11 +546,42 @@ def dfs_iterative(graph, start):
                     stack.append(neighbor)
 
 
+def convert(s: str, numRows: int) -> str:
+    if numRows == 1 or numRows >= len(s):
+        return s
+
+    idx, d = 0, 1
+    rows = [[] for _ in range(numRows)]
+
+    for char in s:
+        rows[idx].append(char)
+        if idx == 0:
+            d = 1
+        elif idx == numRows - 1:
+            d = -1
+        idx += d
+
+    answer = ''.join(''.join(rows[i]) for i in range(len(rows)))
+
+    return answer
+
+
+def reverse(x: int) -> int:
+    x = str(x)[::-1]
+
+    if x[-1] == '-':
+        x = int('-' + x[:-1])
+    else:
+        x = int(x)
+
+    if x not in range(-2 ** 31, 2 ** 31 - 1):
+        return 0
+
+    return x
+
 
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-
-    graph = {"A": ["B", "C"], "B": ["A", "D", "E"], "C": ["A", "F"], "D": ["B"], "E": ["B", "F"], "F": ["C", "E"]}
-    dfs_iterative(graph, 'A')
-    # Результат: A B C D E F
+    sol = Solution()
+    print(sol.reverse(-123))

@@ -106,19 +106,5 @@ def number_is_prime(num: int) -> bool:
     return True
 
 
-def domain_name(string: str) -> str:
-    if '://' in string:
-        string = ''.join(string.split('://')[1:])
-
-    print(string)
-    if string.startswith('www.'):
-        string = data[4:]
-        range_num = string.find('com')
-        return ''.join(string[:range_num + len('com')])
-
-    return ''.join(string.split('://')[1:])
-
-
 if __name__ == '__main__':
-    data = 'www.poisk.com/search?q=python'
-    print(domain_name(data))
+    data = 'poisk.ru'
