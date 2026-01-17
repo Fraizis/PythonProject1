@@ -583,5 +583,4 @@ def reverse(x: int) -> int:
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    sol = Solution()
-    print(sol.reverse(-123))
+    print((55 - 50) // 10)
