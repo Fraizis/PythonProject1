@@ -550,18 +550,22 @@ def convert(s: str, numRows: int) -> str:
     if numRows == 1 or numRows >= len(s):
         return s
 
-    idx, d = 0, 1
+    i = 0
+    c = 1
+
     rows = [[] for _ in range(numRows)]
 
     for char in s:
-        rows[idx].append(char)
-        if idx == 0:
-            d = 1
-        elif idx == numRows - 1:
-            d = -1
-        idx += d
+        rows[i].append(char)
 
-    answer = ''.join(''.join(rows[i]) for i in range(len(rows)))
+        if i == 0:
+            c = 1
+        elif i == numRows - 1:
+            c = -1
+
+        i += c
+
+    answer = ''.join(''.join(rows[j]) for j in range(len(rows)))
 
     return answer
 
@@ -583,4 +587,4 @@ def reverse(x: int) -> int:
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    print((55 - 50) // 10)
+    print(convert('PAYPALISHIRING', 4))
