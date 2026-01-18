@@ -584,7 +584,23 @@ def reverse(x: int) -> int:
     return x
 
 
+def acid_balance():
+    containers = int(input(''))
+    volumes = list(map(int, input('').split(' ')))
+
+    if len(volumes) == 1:
+        return volumes[0]
+
+    if volumes == sorted(volumes):
+        balance = volumes[-1] - volumes[0]
+        return balance
+
+    return -1
+
+
+
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    print(convert('PAYPALISHIRING', 4))
+    # print(convert('PAYPALISHIRING', 4))
+    print(acid_balance())
