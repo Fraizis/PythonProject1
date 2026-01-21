@@ -433,6 +433,7 @@ def median_two_arrays(num_1: List[int], num_2: List[int]) -> float:
 
     if len(nums) == 1:
         return nums[0]
+
     elif len(nums) == 2:
         return (nums[0] + nums[1]) / 2
 
@@ -535,6 +536,7 @@ def printnames(dir):
 def dfs_iterative(graph, start):
     visited = set()
     stack = [start]
+
     while stack:
         vertex = stack.pop()
         if vertex not in visited:
@@ -598,9 +600,12 @@ def acid_balance():
     return -1
 
 
-
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
     # print(convert('PAYPALISHIRING', 4))
-    print(acid_balance())
+    # print(acid_balance())
+    set_1, set_2 = set(), set()
+    set_1.update([1, 2, 3])
+    set_2.update([3, 2, 1])
+    print(set_1, set_2)
