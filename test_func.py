@@ -1,3 +1,4 @@
+import copy
 import os
 import time
 from collections import deque
@@ -600,12 +601,70 @@ def acid_balance():
     return -1
 
 
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        pos = []
+        start = word[0]
+
+        if len(word) == 0:
+            return False
+
+        elif len(word) == 1:
+            for j in range(len(board)):
+                if start in board[j]:
+                    return True
+
+            return False
+
+        for l in range(len(board)):
+            if start in board[l]:
+                for n in range(len(board[l])):
+                    if start == board[l][n]:
+                        pos.append([l, n, 1])
+                        new_board = copy.deepcopy(board)
+
+                        while pos:
+                            print(pos)
+                            next = pos.pop()
+
+                            if next[2] == len(word):
+                                return True
+
+                            new_board[next[0]][next[1]] = ''
+
+                            if (next[0] > 0
+                                    and new_board[next[0] - 1][next[1]] == word[next[2]]):
+                                pos.append([next[0] - 1, next[1], next[2] + 1])
+                                print('up =', new_board[next[0] - 1][next[1]])
+
+                            if (next[0] + 1 < len(new_board)
+                                    and new_board[next[0] + 1][next[1]] == word[next[2]]):
+                                pos.append([next[0] + 1, next[1], next[2] + 1])
+                                print('down =', new_board[next[0] + 1][next[1]])
+
+                            if (next[1] > 0
+                                    and new_board[next[0]][next[1] - 1] == word[next[2]]):
+                                pos.append([next[0], next[1] - 1, next[2] + 1])
+                                print('left =', new_board[next[0]][next[1] - 1])
+
+                            if (next[1] + 1 < len(new_board[next[0]]) and
+                                    new_board[next[0]][next[1] + 1] == word[next[2]]):
+                                pos.append([next[0], next[1] + 1, next[2] + 1])
+                                print('right =', new_board[next[0]][next[1] + 1])
+
+
+        return False
+
+
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-    # print(convert('PAYPALISHIRING', 4))
-    # print(acid_balance())
-    set_1, set_2 = set(), set()
-    set_1.update([1, 2, 3])
-    set_2.update([3, 2, 1])
-    print(set_1, set_2)
+    board = [
+        ["A","B","C","E"],
+        ["S","F","E","S"],
+        ["A","D","E","E"]
+    ]
+    word = "ABCESEEEFS"
+    sol = Solution()
+
+    print(sol.exist(board, word))
