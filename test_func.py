@@ -1,7 +1,7 @@
 import copy
 import os
 import time
-from collections import deque
+from collections import deque, Counter
 from os import listdir
 from os.path import isfile, join
 from typing import List, Optional
@@ -602,55 +602,57 @@ def acid_balance():
 
 
 class Solution:
-    def exist(self, board: List[List[str]], word: str) -> bool:
+    def exist(self, board, word):
         pos = []
-        start = word[0]
 
         if len(word) == 0:
             return False
 
-        elif len(word) == 1:
-            for j in range(len(board)):
-                if start in board[j]:
-                    return True
+        count = 0
 
-            return False
+        for i in range(len(word)):
+            for j in range(len(board)):
+                if word[i] in board[j]:
+                    count += 1
+            if count == 0:
+                return False
+
+            count = 0
 
         for l in range(len(board)):
-            if start in board[l]:
+            if word[0] in board[l]:
                 for n in range(len(board[l])):
-                    if start == board[l][n]:
-                        pos.append([l, n, 1])
-                        new_board = copy.deepcopy(board)
+                    if word[0] == board[l][n]:
+                        pos.append([l, n, 1, copy.deepcopy(board)])
 
                         while pos:
-                            print(pos)
+                            # print(pos)
                             next = pos.pop()
 
                             if next[2] == len(word):
                                 return True
 
-                            new_board[next[0]][next[1]] = ''
+                            next[3][next[0]][next[1]] = ''
 
                             if (next[0] > 0
-                                    and new_board[next[0] - 1][next[1]] == word[next[2]]):
-                                pos.append([next[0] - 1, next[1], next[2] + 1])
-                                print('up =', new_board[next[0] - 1][next[1]])
+                                    and next[3][next[0] - 1][next[1]] == word[next[2]]):
+                                pos.append([next[0] - 1, next[1], next[2] + 1, copy.deepcopy(next[3])])
+                                print('up =', copy.deepcopy(next[3])[next[0] - 1][next[1]])
 
-                            if (next[0] + 1 < len(new_board)
-                                    and new_board[next[0] + 1][next[1]] == word[next[2]]):
-                                pos.append([next[0] + 1, next[1], next[2] + 1])
-                                print('down =', new_board[next[0] + 1][next[1]])
+                            if (next[0] + 1 < len(next[3])
+                                    and next[3][next[0] + 1][next[1]] == word[next[2]]):
+                                pos.append([next[0] + 1, next[1], next[2] + 1, copy.deepcopy(next[3])])
+                                print('down =', copy.deepcopy(next[3])[next[0] + 1][next[1]])
 
                             if (next[1] > 0
-                                    and new_board[next[0]][next[1] - 1] == word[next[2]]):
-                                pos.append([next[0], next[1] - 1, next[2] + 1])
-                                print('left =', new_board[next[0]][next[1] - 1])
+                                    and next[3][next[0]][next[1] - 1] == word[next[2]]):
+                                pos.append([next[0], next[1] - 1, next[2] + 1, copy.deepcopy(next[3])])
+                                print('left =', copy.deepcopy(next[3])[next[0]][next[1] - 1])
 
-                            if (next[1] + 1 < len(new_board[next[0]]) and
-                                    new_board[next[0]][next[1] + 1] == word[next[2]]):
-                                pos.append([next[0], next[1] + 1, next[2] + 1])
-                                print('right =', new_board[next[0]][next[1] + 1])
+                            if (next[1] + 1 < len(next[3][next[0]]) and
+                                    next[3][next[0]][next[1] + 1] == word[next[2]]):
+                                pos.append([next[0], next[1] + 1, next[2] + 1, copy.deepcopy(next[3])])
+                                print('right =', copy.deepcopy(next[3])[next[0]][next[1] + 1])
 
 
         return False
@@ -659,12 +661,46 @@ class Solution:
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
+
+    class Solution_1:
+        def exist(self, board: List[List[str]], word: str) -> bool:
+            rows, cols, = len(board), len(board[0])
+            board_count = Counter(ch for row in board for ch in row)
+            word_count = Counter(word)
+            for ch, cnt in word_count.items():
+                if board_count[ch] < cnt:
+                    return False
+                if board_count[word[0]] > board_count[word[-1]]:
+                    word = word[::-1]
+
+            def dfs(r: int, c: int, i: int) -> bool:
+                if i == len(word):
+                    return True
+                if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[i]:
+                    return False
+                tmp = board[r][c]
+                board[r][c] = "#"
+                found = (
+                        dfs(r + 1, c, i + 1) or
+                        dfs(r - 1, c, i + 1) or
+                        dfs(r, c + 1, i + 1) or
+                        dfs(r, c - 1, i + 1)
+
+                )
+                board[r][c] = tmp
+                return found
+
+            for r in range(rows):
+                for c in range(cols):
+                    if board[r][c] == word[0] and dfs(r, c, 0):
+                        return True
+            return False
+
     board = [
-        ["A","B","C","E"],
-        ["S","F","E","S"],
+        ["A","A","A","A"],
+        ["S","F","C","S"],
         ["A","D","E","E"]
     ]
-    word = "ABCESEEEFS"
-    sol = Solution()
-
+    word = 'ABCCYED'
+    sol = Solution_1()
     print(sol.exist(board, word))
