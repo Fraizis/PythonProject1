@@ -654,84 +654,108 @@ class Solution:
                                 pos.append([next[0], next[1] + 1, next[2] + 1, copy.deepcopy(next[3])])
                                 print('right =', copy.deepcopy(next[3])[next[0]][next[1] + 1])
 
-
         return False
+
+
+class Solution_1:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        rows, cols, = len(board), len(board[0])
+        board_count = Counter(ch for row in board for ch in row)
+        word_count = Counter(word)
+        for ch, cnt in word_count.items():
+            if board_count[ch] < cnt:
+                return False
+            if board_count[word[0]] > board_count[word[-1]]:
+                word = word[::-1]
+
+        def dfs(r: int, c: int, i: int) -> bool:
+            if i == len(word):
+                return True
+            if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[i]:
+                return False
+            tmp = board[r][c]
+            board[r][c] = "#"
+            found = (
+                    dfs(r + 1, c, i + 1) or
+                    dfs(r - 1, c, i + 1) or
+                    dfs(r, c + 1, i + 1) or
+                    dfs(r, c - 1, i + 1)
+
+            )
+            board[r][c] = tmp
+            return found
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == word[0] and dfs(r, c, 0):
+                    return True
+        return False
+
+
+def zip_unzip():
+    a = [1, 2, 3, 4]
+    b = ['a', 'b', 'c']
+
+    res = zip()
+    print(list(res))
+
+    res = zip(a)
+    print(list(res))
+
+    res = zip(a, b)
+    print(list(res))
+
+    lst = [(1, 'a'), (2, 'b'), (3, 'c')]
+    first, second = zip(*lst)
+    print(first, second)
+
+    d = {'name': 'Felix', 'age': 27, 'grade': 'A'}
+    keys = d.keys()
+    values = d.values()
+
+    res = zip(keys, values)
+    print(list(res))
+
+    a = ['sravan', 'bobby', 'ojaswi', 'rohith', 'gnanesh']
+    b = ['java', 'python', 'R', 'cpp', 'bigdata']
+    c = [78, 100, 97, 89, 80]
+
+    zipped = list(zip(a, b, c))
+
+    # Sorting in-place by second element
+    zipped.sort(key=lambda x: x[2])
+    print('z', zipped)
+
+    for i, (name, subject, mark) in enumerate(zip(a, b, c)):
+        print(i, name, subject, mark)
+
+    print()
+
+    for i, t in enumerate(zip(a, b, c)):
+        print(i, t[0], t[1], t[2])
+
+    a = ['Geeks', 'for', 'Geeks']
+
+    # Creating an enumerate object from the list 'a'
+    b = enumerate(a)
+
+    while b:
+        try:
+            val = next(b)
+            print(val)
+        except Exception as e:
+            break
 
 
 if __name__ == '__main__':
     array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
     nums = [2, 7, 11, 15]
-
-    class Solution_1:
-        def exist(self, board: List[List[str]], word: str) -> bool:
-            rows, cols, = len(board), len(board[0])
-            board_count = Counter(ch for row in board for ch in row)
-            word_count = Counter(word)
-            for ch, cnt in word_count.items():
-                if board_count[ch] < cnt:
-                    return False
-                if board_count[word[0]] > board_count[word[-1]]:
-                    word = word[::-1]
-
-            def dfs(r: int, c: int, i: int) -> bool:
-                if i == len(word):
-                    return True
-                if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[i]:
-                    return False
-                tmp = board[r][c]
-                board[r][c] = "#"
-                found = (
-                        dfs(r + 1, c, i + 1) or
-                        dfs(r - 1, c, i + 1) or
-                        dfs(r, c + 1, i + 1) or
-                        dfs(r, c - 1, i + 1)
-
-                )
-                board[r][c] = tmp
-                return found
-
-            for r in range(rows):
-                for c in range(cols):
-                    if board[r][c] == word[0] and dfs(r, c, 0):
-                        return True
-            return False
-
     board = [
-        ["A","A","A","A"],
-        ["S","F","C","S"],
-        ["A","D","E","E"]
+        ["A", "A", "A", "A"],
+        ["S", "F", "C", "S"],
+        ["A", "D", "E", "E"]
     ]
     word = 'ABCCYED'
     sol = Solution_1()
     # print(sol.exist(board, word))
-    #
-    # import pyperclip
-    # # Подключим модуль для работы с системным временем
-    # import time
-    #
-    # # Задаем переменную old и присваиваем ей пустую строку
-    # old = ''
-    # # Начнем бесконечный цикл слежения за буфером обмена
-    # while True:
-    #     # Кладем в переменную s содержимое буфера обмена
-    #     s = pyperclip.paste()
-    #     print('s', pyperclip.copy(1234))
-    #     # Если полученное содержимое не равно предыдущему, то:
-    #     if (s != old):
-    #         # печатаем его
-    #         print(s)
-    #         # в переменную old записываем текущее пойманное значение
-    #         # чтобы в следующий виток цикла не повторяться и не печатать то, что уже поймано
-    #         old = s
-    #     # В конце витка цикла делаем паузу в одну секунду, чтобы содержимое буфера обмена успело прогрузиться
-    #     time.sleep(1)
-
-    import requests
-
-    city = 'Москва'
-    # Сформировать URL для запроса API
-    url = f'https://wttr.in/{city}?format=%C+%t+%w'
-    # Отправить запрос
-    response = requests.get(url)
-    # Вывести ответ
-    print(response.text)
+    # zip_unzip()
