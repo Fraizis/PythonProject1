@@ -20,31 +20,6 @@ def activity_selection(activities):
     return selected
 
 
-def fractional_knapsack(values, weights, capacity):
-    """
-    values = [60, 100, 120]
-    weights = [10, 20, 30]
-    capacity = 50
-
-    result = fractional_knapsack(values, weights, capacity)
-
-    print("Maximum value in knapsack:", result)
-    """
-    ratio = [(v / w, v, w) for v, w in zip(values, weights)]
-    ratio.sort(reverse=True)
-
-    total_value = 0
-    for r, v, w in ratio:
-        if capacity >= w:
-            capacity -= w
-            total_value += v
-        else:
-            total_value += r * capacity
-            break
-
-    return total_value
-
-
 class Node:
     def __init__(self, char, freq):
         self.char = char
@@ -174,22 +149,93 @@ def isMatch(s: str, p: str) -> bool:
         else:
             return False
 
-    while r  < len(p) and p[r] == '*':
+    while r < len(p) and p[r] == '*':
         r += 1
 
     return r == len(p)
 
 
-if __name__ == "__main__":
-    # activities = [(1, 3), (2, 5), (4, 6), (6, 7), (5, 9)]
-    # result = activity_selection(activities)
-    # print("Selected activities:", result)
-    # a, b = map(int, input().strip().split())
-    # print(a, b)
+def fractional_knapsack(items, capacity):
+    """
+    Solve fractional knapsack problem.
+    Items are tuples of (value, weight, name).
+    """
 
-    # height = [1,8,6,2,5,4,8,3,7]
-    # print(max_area(height=height))
-    # print(isMatch(s="aa", p="a"))
-    # print(isMatch(s="aa", p="*"))
-    # print(isMatch(s="cb", p="?a"))
-    print(isMatch(s="cbartyegfbn", p="*a*?bn"))
+    items_with_ratio = [
+        (value / weight, value, weight, name)
+        for value, weight, name in items
+    ]
+
+    # Sort by ratio (greedy choice: best value per weight)
+    items_with_ratio.sort(reverse=True)
+
+    total_value = 0
+    remaining_capacity = capacity
+    result = []
+
+    for ratio, value, weight, name in items_with_ratio:
+        if remaining_capacity == 0:
+            break
+
+        amount_taken = min(weight, remaining_capacity)
+        fraction = amount_taken / weight
+
+        total_value += value * fraction
+        remaining_capacity -= amount_taken
+
+        result.append({
+            'name': name,
+            'fraction': fraction,
+            'value': value * fraction
+        })
+
+    return total_value, result
+
+
+def robust_greedy_template(items, constraint):
+    """
+    Template for implementing greedy algorithms robustly.
+    """
+    # 1. Validate input
+    if not items:
+        return None
+
+    # 2. Sort by greedy criterion (most critical step)
+    # Choose the right sorting key for your problem
+    sorted_items = sorted(items, key=lambda x: your_greedy_criterion(x))
+
+    # 3. Initialize result tracking
+    result = []
+    current_state = initialize_state()
+
+    # 4. Make greedy choices
+    for item in sorted_items:
+        if is_feasible(item, current_state, constraint):
+            result.append(item)
+            current_state = update_state(current_state, item)
+
+            # Early termination if possible
+            if is_complete(current_state, constraint):
+                break
+
+    # 5. Validate solution
+    if is_valid_solution(result, constraint):
+        return result
+
+    return None  # No valid solution exists
+
+
+if __name__ == "__main__":
+    items = [
+        (60, 10, "Gold"),
+        (100, 20, "Silver"),
+        (120, 30, "Bronze"),
+    ]
+    capacity = 50
+
+    total, packed = fractional_knapsack(items, capacity)
+    print(f"Maximum value: ${total}")
+    print("\nItems packed:")
+
+    for item in packed:
+        print(f"  {item['name']}: {item['fraction']:.1%} (${item['value']:.2f})")
