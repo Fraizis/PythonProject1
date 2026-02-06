@@ -1,4 +1,5 @@
 import heapq
+from typing import List
 
 
 def activity_selection(activities):
@@ -134,11 +135,61 @@ def set_covering(states_needed, stations):
     return final_stations
 
 
+def max_area(height: List[int]) -> int:
+    max_vol = 0
+    l, r = 0, len(height) - 1
+
+    while l < r:
+        print(height[l], height[r])
+        side = min(height[l], height[r])
+        length = r - l
+        max_vol = max(max_vol, side * length)
+        if height[l] < height[r]:
+            l += 1
+        else:
+            r -= 1
+
+    return max_vol
+
+
+def isMatch(s: str, p: str) -> bool:
+    l = r = 0
+    star = -1
+    match = 0
+
+    while l < len(s):
+        if r < len(p) and (s[l] == p[r] or p[r] == '?'):
+            l += 1
+            r += 1
+
+        elif r < len(p) and p[r] == '*':
+            star = r
+            match = l
+            r += 1
+
+        elif star != -1:
+            r = star + 1
+            match += 1
+            l = match
+        else:
+            return False
+
+    while r  < len(p) and p[r] == '*':
+        r += 1
+
+    return r == len(p)
+
+
 if __name__ == "__main__":
     # activities = [(1, 3), (2, 5), (4, 6), (6, 7), (5, 9)]
     # result = activity_selection(activities)
     # print("Selected activities:", result)
     # a, b = map(int, input().strip().split())
     # print(a, b)
-    num = int(input())
-    print(num)
+
+    # height = [1,8,6,2,5,4,8,3,7]
+    # print(max_area(height=height))
+    # print(isMatch(s="aa", p="a"))
+    # print(isMatch(s="aa", p="*"))
+    # print(isMatch(s="cb", p="?a"))
+    print(isMatch(s="cbartyegfbn", p="*a*?bn"))
