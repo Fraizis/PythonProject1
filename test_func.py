@@ -1,5 +1,6 @@
 import copy
 import os
+import re
 import time
 from collections import deque, Counter
 from os import listdir
@@ -478,11 +479,10 @@ def longest_palindromic_substring(s: str):
                 new_sub = s[i:j + 1]
 
                 if new_sub == new_sub[::-1] and max_str < len(new_sub):
-                    longest_sub_str = s[i:j + 1]
+                    longest_sub_str = new_sub
                     max_str = len(new_sub)
 
     return longest_sub_str
-
 
 
 def print_names(start_dir):
@@ -602,15 +602,54 @@ def zip_unzip():
             break
 
 
+def myAtoi(s: str) -> int:
+    res = 0
+    sign = 1
+    max_val = 2 ** 31 - 1
+    min_val = -2 ** 31
+
+    s = s.strip()
+
+    if not s:
+        return 0
+
+    if s[0] == '-':
+        sign = -1
+        s = s[1:]
+    elif s[0] == '+':
+        s = s[1:]
+
+    for char in s:
+        if char.isdigit():
+            res = res * 10 + int(char)
+        else:
+            break
+
+    res *= sign
+
+    if res > max_val:
+        return max_val
+
+    elif res < min_val:
+        return min_val
+
+    return res
+
+
 if __name__ == '__main__':
-    array = [5, 25, 1, 11, 31, 17, 2, 14, 8, 16, 4]
-    nums = [2, 7, 11, 15]
-    board = [
-        ["A", "A", "A", "A"],
-        ["S", "F", "C", "S"],
-        ["A", "D", "E", "E"]
-    ]
-    word = 'ABCCYED'
-    sol = Solution_1()
+    text = "   -042"
+    text_2 = '1337c0d3'
+    text_3 = "words and 987"
+    print(myAtoi(text))
+    print(myAtoi(text_2))
+    print(myAtoi(text_3))
+
+    # match = re.search(pattern, text)
+    # if match:
+    #     t = -int(match.group())
+    #     print(t)
+    #     print(f"Найдено: {match.group()}", match.start(), match.group())
+    # print(myAtoi("   -042"))
+
     # print(sol.exist(board, word))
     # zip_unzip()
