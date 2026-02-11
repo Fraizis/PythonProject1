@@ -635,21 +635,18 @@ def myAtoi(s: str) -> int:
 
     return res
 
+def is_palindrome(x: int) -> bool:
+    x = str(x)
+
+    if x == x[::-1]:
+        return True
+
+    return False
+
+
+
 
 if __name__ == '__main__':
     text = "   -042"
     text_2 = '1337c0d3'
     text_3 = "words and 987"
-    print(myAtoi(text))
-    print(myAtoi(text_2))
-    print(myAtoi(text_3))
-
-    # match = re.search(pattern, text)
-    # if match:
-    #     t = -int(match.group())
-    #     print(t)
-    #     print(f"Найдено: {match.group()}", match.start(), match.group())
-    # print(myAtoi("   -042"))
-
-    # print(sol.exist(board, word))
-    # zip_unzip()
