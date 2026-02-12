@@ -1,8 +1,10 @@
 import copy
+import math
 import os
 import re
 import time
 from collections import deque, Counter
+from decimal import Decimal
 from os import listdir
 from os.path import isfile, join
 from typing import List, Optional
@@ -560,6 +562,10 @@ def zip_unzip():
     res = zip(a, b)
     print(list(res))
 
+    x = ('Зима', 'Весна', 'Лето', 'Осень')
+    y = x[1:] + x[:1]
+    print(dict(zip(x, y)))
+
     lst = [(1, 'a'), (2, 'b'), (3, 'c')]
     first, second = zip(*lst)
     print(first, second)
@@ -645,65 +651,11 @@ def is_palindrome(x: int) -> bool:
     return False
 
 
-def string_func():
-    text = "hello world"
-    print(text.capitalize())  # "Hello world"
-
-    text = "hello world"
-    print(text.upper())  # "HELLO WORLD"
-
-    text = "HELLO World"
-    print(text.lower())  # "hello world"
-
-    text = "hello world"
-    print(text.replace('world', 'Python'))  # "hello Python"
-
-    text = "hello world"
-    print(text.find('l'))  # 2
-
-    text = "hello world"
-    print(text.rfind('l'))  # 9
-
-    text = "   hello world   "
-    print(text.strip())  # "hello world"
-
-    text = "hello world"
-    print(text.split())  # ['hello', 'world']
-
-    words = ["hello", "world"]
-    print(' '.join(words))  # "hello world"
-
-    text = "hello world"
-    print(text.startswith('he'))  # True
-
-    text = "hello world"
-    print(text.endswith('ld'))  # True
-
-    text = "hello world"
-    print(text.count('l'))  # 3
-
-    text = "HelloWorld"
-    print(text.isalpha())  # True
-
-    text = "12345"
-    print(text.isdigit())  # True
-
-    text = "     "
-    print(text.isspace())  # True
-
-    text = "hello world"
-    print(text.title())  # "Hello World"
-
-    text = "HeLLo WoRLd"
-    print(text.swapcase())  # "hEllO wOrlD"
-
-
 if __name__ == '__main__':
     text_2 = '1337c0d3'
     text_3 = "words and 987"
-    from decimal import Decimal
-    num = Decimal('17.9')
-    rounded = num.quantize(Decimal('0.001'))
 
-    print(rounded)
-    print(round(17.9 % 1, 3))
+    num = 18
+    summ = sum(map(int, str(num)))
+
+    print(num % summ)
