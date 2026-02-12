@@ -74,7 +74,7 @@ def generate_codes(node, code="", huffman_codes=None):
     return huffman_codes
 
 
-def set_covering(states_needed, stations):
+def set_covering(states_needed: set[str], stations: dict[str, set[str]]):
     """
     states_needed = {"mt", "wa", "or", "id", "nv", "ut", "ca", "az"}
     stations = {
@@ -155,7 +155,7 @@ def isMatch(s: str, p: str) -> bool:
     return r == len(p)
 
 
-def fractional_knapsack(items, capacity):
+def fractional_knapsack(items: List[tuple[int, int, str]], capacity: int):
     """
     Solve fractional knapsack problem.
     Items are tuples of (value, weight, name).
@@ -226,16 +226,6 @@ def robust_greedy_template(items, constraint):
 
 
 if __name__ == "__main__":
-    items = [
-        (60, 10, "Gold"),
-        (100, 20, "Silver"),
-        (120, 30, "Bronze"),
-    ]
-    capacity = 50
-
-    total, packed = fractional_knapsack(items, capacity)
-    print(f"Maximum value: ${total}")
-    print("\nItems packed:")
-
-    for item in packed:
-        print(f"  {item['name']}: {item['fraction']:.1%} (${item['value']:.2f})")
+    s = 'abtrfcsyu'
+    p = 'ab*cu'
+    print(isMatch(s, p))
