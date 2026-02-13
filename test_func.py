@@ -1,7 +1,9 @@
 import copy
 import math
 import os
+import random
 import re
+import string
 import time
 from collections import deque, Counter
 from decimal import Decimal
@@ -570,6 +572,9 @@ def zip_unzip():
     first, second = zip(*lst)
     print(first, second)
 
+    random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    print(random_string)
+
     d = {'name': 'Felix', 'age': 27, 'grade': 'A'}
     keys = d.keys()
     values = d.values()
@@ -583,7 +588,6 @@ def zip_unzip():
 
     zipped = list(zip(a, b, c))
 
-    # Sorting in-place by second element
     zipped.sort(key=lambda x: x[2])
     print('z', zipped)
 
@@ -597,7 +601,6 @@ def zip_unzip():
 
     a = ['Geeks', 'for', 'Geeks']
 
-    # Creating an enumerate object from the list 'a'
     b = enumerate(a)
 
     while b:
@@ -652,10 +655,7 @@ def is_palindrome(x: int) -> bool:
 
 
 if __name__ == '__main__':
-    text_2 = '1337c0d3'
-    text_3 = "words and 987"
+    lst_nums = input().split()
+    a, b = map(int, input().split())
 
-    num = 18
-    summ = sum(map(int, str(num)))
-
-    print(num % summ)
+    print(*lst_nums[a:b + 1])
