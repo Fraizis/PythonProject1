@@ -655,7 +655,15 @@ def is_palindrome(x: int) -> bool:
 
 
 if __name__ == '__main__':
-    lst_nums = input().split()
-    a, b = map(int, input().split())
+    # nums = sum(map(int, input().split()))
+    # print(nums)
+    nums = 3
+    lst_nums = [(3, -2), (7, 1), (0, 4)]
 
-    print(*lst_nums[a:b + 1])
+    for i in range(nums):
+        c = tuple(map(int, input().split()))
+        lst_nums.append(c)
+
+    # answer = sorted(lst_nums, key=lambda x: x[0])
+    answer = sum(x[0] for x in lst_nums)
+    print(answer)
