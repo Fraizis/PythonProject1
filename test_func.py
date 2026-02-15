@@ -653,6 +653,7 @@ def is_palindrome(x: int) -> bool:
 
     return False
 
+
 def add_names() -> set:
     nums = int(input())
     set_names = set()
@@ -664,57 +665,20 @@ def add_names() -> set:
     return set_names
 
 
-
-
+def power(n, exp):
+    if exp > 1:
+        exp -= 1
+        n *= power(n, exp)
+    return n
 
 
 if __name__ == '__main__':
     # string_1 = 'a:5 b:3'.split()
     # string_2 = 'a:2 c:7'.split()
-    # n = int(input())
-    # numbers = list(map(int, input().split()))
-    # numbers = list(map(int, '72 42'.split()))
-
-    def min_and_max(data):
-        d = DefaultDict(int)
-        d[1] = 0
-        d[2] = 0
-        d[3] = 0
-        for i in data:
-            if i.isdigit():
-                d[2] += 1
-            elif i.isalpha():
-                d[1] += 1
-            else:
-                d[3] += 1
-
-        return d
-
-    numbers = 'Hello123454545!'
-    answer = min_and_max(numbers)
+    # s = input()
+    s = '123'
+    answer = power(2, 4)
     print(answer)
-    for v in answer.values():
-        print(v, end = ' ')
-
-    # dict_2 = dict(k: int(v) for k, v in [x.split(':') for x in string_2])
-
-    # print(dict(x.split(':') for x in string_1))
-
-    # string = input().split()
-    #
-    # for i in string:
-    #     if i in d:
-    #         d[i] += 1
-    #     else:
-    #         d[i] = 1
-    #
-    # for k, v in d.items():
-    #     print(f'{k}: {v}')
-
-
-            # answer = sorted(lst_nums, key=lambda x: x[0])
-    # answer = sum(x[0] for x in lst_nums)
-    # print(*answer)
     # n_1 = set(map(int, input().split()))
     # n_2 = set(map(int, input().split()))
     # answer = sorted(n_1.intersection(n_2))
