@@ -25,7 +25,7 @@ import pandas as pd
 # )
 # print(df)
 
-data = pd.read_csv('train.csv')
+# data = pd.read_csv('train.csv')
 #
 # # df_excel = pd.read_excel('data.xlsx')
 # # print(data.loc[1])
@@ -33,15 +33,7 @@ data = pd.read_csv('train.csv')
 
 # data.to_csv('train_new.csv', index=False)
 # data.to_excel('train_new.xlsx', index=False)
-#
-# df = pd.DataFrame( { "a": [4, 5, 6], "b": [7, 8, 9], "c": [10, 11, 12] }, index=["abc", "def", "ghi"] )
-# print(df)
-#
-# df.columns = ['A', 'B', 'C']
-# df.index = [1, 2, 3]
-# print(df)
-# data['FamilySize'] = data['SibSp'] + data['Parch']
-#
+
 # data['Alone'] = data['FamilySize'].apply(lambda x: 1 if x == 0 else 0)
 
 # data[['FamilySize', 'Alone']].head()
@@ -58,8 +50,8 @@ data = pd.read_csv('train.csv')
 # # print(data['Age'][:100])
 # data['Embarked'].mode()
 # print(data['Embarked'][:100])
-print(data.groupby('Pclass')['Fare'].mean())
-print(data.groupby(['Sex', 'Pclass'])['Age'].mean())
+# print(data.groupby('Pclass')['Fare'].mean())
+# print(data.groupby(['Sex', 'Pclass'])['Age'].mean())
 
 # print(data[
 #           (data['Sex'] == 'female') &
@@ -72,4 +64,46 @@ print(data.groupby(['Sex', 'Pclass'])['Age'].mean())
 #       )
 # print(data[(data['SibSp'] + data['Parch'] >= 2) & (data['Pclass'] == 3)].shape)
 # print(data[data['Age'] > data['Age'].mean()]['Name'].head())
-print(data.groupby('Pclass')['Fare'].agg(['min', 'max', 'mean', 'median']))
+
+# print(data.groupby(['Pclass', 'Sex'])['Age'].mean())
+# print(round(28.722973, 2))
+
+# df = pd.DataFrame({ 'Name': ['Alice', 'Bob', 'Charlie'], 'Age': [25, 30, 20] })
+# df_sorted = df.sort_values(by='Age')
+# df.sort_values(by='Age', ascending = False)
+# print(df.sort_values(by='Age', ascending = False))
+# df.sort_values(by=['Name', 'Age'], ascending=[True, False])
+# print(df.sort_values(by=['Name', 'Age'], ascending=[True, False]))
+# df = pd.DataFrame({ 'Value': [3, None, 2, None, 1] })
+# print(df.sort_values(by='Value', na_position='first'))
+
+def attrition_dep():
+    df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
+    df['Attrition'] = df['Attrition'] == 'Yes'
+    print('Процент уволенных в каждом департаменте:')
+    print(df.groupby('Department')['Attrition'].mean() * 100)
+
+
+def attrition_marriage():
+    df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
+    print(df['MaritalStatus'].unique())
+    df['Married'] = df['MaritalStatus'] == 'Married'
+    df['Attrition'] = df['Attrition'] == 'Yes'
+    print('Вероятности увольнения сотрудников в браке и не в браке:')
+    print(df.groupby('Married')['Attrition'].mean() * 100)
+
+
+def not_attrition_edu():
+    df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
+    # print(df['EducationField'].unique())
+    df['Attrition'] = df['Attrition'] == 'No'
+    edu_field = df.groupby('EducationField')['Attrition'].mean() * 100
+
+    print(f'Процент не уволенных среди сотрудников, '
+          f'у которых указана сфера образования Other: {edu_field['Other']:0.2f}%\n')
+    print('Влияет ли сфера образования на увольнение:')
+    print(edu_field)
+
+
+if __name__ == '__main__':
+    not_attrition_edu()
