@@ -672,14 +672,54 @@ def power(n, exp):
     return n
 
 
+def avg_moda_median():
+    arr = [75, 62, 75, 42, 57, 68, 92]
+
+    avg_num = round(sum(arr) / len(arr))
+    moda = max(set(arr), key=arr.count)
+
+    occurence_count = Counter(arr).most_common(1)[0][0]
+    # print(occurence_count.most_common(1)[0])
+
+    sort_arr = sorted(arr)
+    mid = len(sort_arr) // 2
+
+    if len(sort_arr) % 2 == 0:
+        median = round(sort_arr[mid] + sort_arr[mid + 1] / 2)
+    else:
+        median = sort_arr[mid]
+
+    return f'avg: {avg_num}, moda {moda}, median {median}'
+
+
+def rate_of_profit_per_year():
+    arr = [120, 140, 180, 170, 200]
+    arr_rev = arr[::-1]
+    nlst = []
+
+    for i in range(len(arr_rev) - 1):
+        per = (arr_rev[i] - arr_rev[i + 1]) / arr_rev[i + 1] * 100
+        nlst.append(per)
+
+    avg_sum = sum(nlst) / len(nlst)
+    answer = arr_rev[0] + (arr_rev[0] * (avg_sum / 100))
+
+    return round(answer)
+
+
+def correct_sequence():
+    string = list(map(str, '()(()())'))
+    print(string.count('('))
+    print(string.count(')'))
+
+    if string.count('(') == string.count(')'):
+        print('Последовательность правильная')
+    else:
+        print('Последовательность неправильная')
+
+
 if __name__ == '__main__':
-    # string_1 = 'a:5 b:3'.split()
-    # string_2 = 'a:2 c:7'.split()
-    # s = input()
-    s = '123'
-    answer = power(2, 4)
-    print(answer)
-    # n_1 = set(map(int, input().split()))
-    # n_2 = set(map(int, input().split()))
-    # answer = sorted(n_1.intersection(n_2))
-    # print(*answer)
+    print()
+    print(correct_sequence())
+    # print(y)
+    # print(Counter(y))
