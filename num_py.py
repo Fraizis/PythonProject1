@@ -117,6 +117,7 @@ def dtype_prop():
     int_array[2] = 100
     print(int_array)  # Вывод: [1  2 100]
 
+
 def reshape_change_arr():
     # Создаем одномерный массив
     array_1d = numpy.array([1, 2, 3, 4, 5, 6])
@@ -152,6 +153,7 @@ def reshape_change_arr():
     #  [ 4  5  6  7]
     #  [ 8  9 10 11]]
 
+
 def odd_arr_index():
     array_1d = numpy.array([n for n in range(10)])
     print(array_1d)
@@ -166,13 +168,242 @@ def arr_2d():
     print(a)
     print(elem)
 
+
 def change_rows():
     arr = numpy.arange(1, 10).reshape(3, 3)
     arr[:, [0, 2]] = arr[:, [2, 0]]
     print(arr)
 
 
+def operations():
+    a = numpy.array([1, 2, 3])
+    b = numpy.array([4, 5, 6])
+
+    # Сложение
+    sum_array = a + b  # результат: [5, 7, 9]
+
+    # Вычитание
+    sub_array = a - b  # результат: [-3, -3, -3]
+
+    # Умножение
+    mul_array = a * b  # результат: [4, 10, 18]
+
+    # Деление
+    div_array = a / b  # результат: [0.25, 0.4, 0.5]
+
+    # Возведение в степень
+    power_array = a ** 2  # результат: [1, 4, 9]
+
+    # Бродкастинг: прибавляем скаляр к массиву
+    c = numpy.array([1, 2, 3])
+    d = 2
+    result = c + d  # результат: [3, 4, 5]
+
+
+def ufunc_numpy():
+    # Создаем массив
+    a = numpy.array([1, 4, 9, 16])
+
+    # Вычисляем квадратный корень
+    sqrt_array = numpy.sqrt(a)  # результат: [1. 2. 3. 4.]
+
+    # Экспоненциальная функция
+    b = numpy.array([0, 1, 2])
+
+    exp_array = numpy.exp(b)  # результат: [1.         2.71828183 7.3890561 ]
+
+    # Пример 1
+    # Создаем массив углов в радианах
+    angles = numpy.array([0, numpy.pi / 2, numpy.pi])
+    print(angles)
+    # Вычисляем синус
+    sin_array = numpy.sin(angles)  # результат: [0. 1. 0.]
+
+    # Пример 2
+    # Вычисляем синус
+    numpy.sin(numpy.pi / 2.)  # результат: 1.0
+
+    cos_array = numpy.cos(angles)  # результат: [1. 0.  -1.]
+
+    tan_array = numpy.tan(angles)  # результат: [0.  -inf.  0.]
+
+    # Создаем массив положительных значений
+    c = numpy.array([1, numpy.e, numpy.e ** 2])
+
+    log_array = numpy.log(c)  # результат: [0. 1. 2.]
+
+    x = numpy.array([1, 2, 3])
+
+    # Применяем несколько ufunc
+    result = numpy.sqrt(numpy.exp(x))  # вычисляем √(e^x) для каждого элемента
+
+
+def statistic_numpy():
+    # Создаем массив
+    data = numpy.array([1, 2, 3, 4, 5])
+
+    # Вычисляем среднее
+    mean_value = numpy.mean(data)  # результат: 3.0
+
+    median_value = numpy.median(data)  # результат: 3.0
+
+    std_value = numpy.std(data)  # результат: 1.4142135623730951
+
+    var_value = numpy.var(data)  # результат: 2.0
+
+    min_value = numpy.min(data)  # результат: 1
+    max_value = numpy.max(data)  # результат: 5
+
+    # 25-й и 75-й процентили
+    q25 = numpy.percentile(data, 25)  # результат: 2.0
+    q75 = numpy.percentile(data, 75)  # результат: 4.0
+
+    # Создаем двумерный массив
+    matrix = numpy.array([[1, 2, 3], [4, 5, 6]])
+
+    # Среднее по строкам
+    mean_rows = numpy.mean(matrix, axis=1)  # результат: [2. 5.]
+
+    # Среднее по столбцам
+    mean_columns = numpy.mean(matrix, axis=0)  # результат: [2.5 3.5 4.5]
+
+
+def concatenate_arr():
+    # Создаем два одномерных массива
+    a = numpy.array([1, 2, 3])
+    b = numpy.array([4, 5, 6])
+
+    # Объединяем их
+    result = numpy.concatenate((a, b))
+    print(result)  # Output: [1 2 3 4 5 6]
+
+    # Создаем два двумерных массива
+    a = numpy.array([[1, 2, 3], [4, 5, 6]])
+    b = numpy.array([[7, 8, 9]])
+
+    # Объединяем вдоль первой оси (по строкам)
+    result = numpy.concatenate((a, b), axis=0)
+    print(result)
+    # Output:
+    # [[1 2 3]
+    #  [4 5 6]
+    #  [7 8 9]]
+
+    # Создаем два двумерных массива
+    a = numpy.array([[1, 2, 3], [4, 5, 6]])
+    b = numpy.array([[7, 8, 9]])
+
+    # Объединяем их по вертикали
+    result = numpy.vstack((a, b))
+    print(result)
+    # Output:
+    # [[1 2 3]
+    #  [4 5 6]
+    #  [7 8 9]]
+
+    # Создаем два двумерных массива
+    a = numpy.array([[1, 2, 3], [4, 5, 6]])
+    b = numpy.array([[7], [8]])
+
+    # Объединяем их по горизонтали
+    result = numpy.hstack((a, b))
+    print(result)
+    # Output:
+    # [[1 2 3 7]
+    #  [4 5 6 8]]
+
+    # Разделение массивов
+
+    # Создаем одномерный массив
+    a = numpy.array([1, 2, 3, 4, 5, 6])
+
+    # Разделяем массив на 3 части
+    result = numpy.split(a, 3)
+    print(result)  # Output: [array([1, 2]), array([3, 4]), array([5, 6])]
+
+    # Создаем двумерный массив
+    a = numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+    # Разделяем массив на 3 части по первой оси (по строкам)
+    result = numpy.split(a, 3, axis=0)
+    print(result)
+    # Output:
+    # [array([[1, 2, 3]]), array([[4, 5, 6]]), array([[7, 8, 9]])]
+
+    # Создаем двумерный массив
+    a = numpy.array([[1, 2, 3], [4, 5, 6]])
+
+    # Разделяем массив на 3 части по горизонтали
+    result = numpy.hsplit(a, 3)
+    print(result)
+    # Output: [array([[1],
+    #                 [4]]),
+    #           array([[2],
+    #                 [5]]),
+    #           array([[3],
+    #                 [6]])]
+
+    # Создаем двумерный массив
+    a = numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+    # Разделяем массив на 3 части по вертикали
+    result = numpy.vsplit(a, 3)
+    print(result)
+    # Output:
+    # [array([[1, 2, 3]]), array([[4, 5, 6]]), array([[7, 8, 9]])]
+
+
+def mask_numpy():
+    # Создаем массив
+    a = numpy.array([10, 20, 30, 40, 50])
+
+    # Создаем булевый массив, выделяя элементы больше 30
+    mask = a > 30
+
+    print(mask)  # Output: [False False False  True  True]
+
+    # Используем булевый массив для извлечения элементов
+    filtered = a[mask]
+    print(filtered)  # Output: [40 50]
+
+    # Создаем массив
+    a = numpy.array([10, 20, 30, 40, 50])
+
+    # Используем маскировку для извлечения элементов больше 30
+    filtered = a[a > 30]
+    print(filtered)  # Output: [40 50]
+
+    # Создаем двумерный массив
+    b = numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+    # Создаем маску для элементов больше 5
+    mask = b > 5
+
+    print(mask)
+    # Output:
+    # [[False False False]
+    #  [False False  True]
+    #  [ True  True  True]]
+
+    # Используем маску для извлечения элементов
+    filtered = b[mask]
+    print(filtered)  # Output: [6 7 8 9]
+
+    # Создаем массив
+    # a = numpy.array([10, 20, 30, 40, 50])
+
+    # Извлекаем элементы, которые больше 20 и меньше 50
+    filtered = a[(a > 20) & (a < 50)]
+    print(filtered)  # Output: [30 40]
+
 
 if __name__ == '__main__':
     print()
-    change_rows()
+    a = numpy.array([x for x in range(16)]).reshape(4, 4)
+    # res = numpy.vsplit(a, 2)
+    array_2d = numpy.array([[12, 25, 7, 45],
+                         [30, 18, 50, 2],
+                         [60, 75, 5, 20],
+                         [15, 9, 33, 42]])
+    array_2d[array_2d < 20] = 0
+    print(array_2d)
