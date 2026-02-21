@@ -402,8 +402,8 @@ if __name__ == '__main__':
     a = numpy.array([x for x in range(16)]).reshape(4, 4)
     # res = numpy.vsplit(a, 2)
     array_2d = numpy.array([[12, 25, 7, 45],
-                         [30, 18, 50, 2],
-                         [60, 75, 5, 20],
-                         [15, 9, 33, 42]])
+                            [30, 18, 50, 2],
+                            [60, 75, 5, 20],
+                            [15, 9, 33, 42]])
     array_2d[array_2d < 20] = 0
     print(array_2d)

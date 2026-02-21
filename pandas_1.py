@@ -2,34 +2,53 @@ import pandas as pd
 import seaborn
 
 
-def create_df():
-    s = pd.Series([10, 20, 30, 40])
-    print(s)
+def create_series_df():
+    # Создание Series из списка
+    s1 = pd.Series([1, 2, 3, 4, 5])
+    print(s1)
 
-    s = pd.Series(data=[100, 200, 300], index=['A', 'B', 'C'], name='Letters with numbers', dtype=float)
-    print(s)
+    # Создание Series с определенным индексом
+    s2 = pd.Series([10, 20, 30], index=['a', 'b', 'c'])
+    print(s2)
 
-    s = pd.Series(data=[1, 2, 3], index=['x', 'y', 'z'])
-    print(s)
+    print(s1[0])  # Выводит первый элемент
+    print(s2['b'])  # Выводит элемент с индексом 'b'
 
-    s = pd.Series({'A': 100, 'B': 200, 'C': 300}, dtype=int)
-    print(s)
+    s3 = s1 + 10
+    print(s3)  # К каждому элементу добавляется 10
 
-    df = pd.DataFrame(data={"a": [4, 5, 6], "b": [7, 8, 9], "c": [10, 11, 12]}, index=['abc', 'def', 'ghi'])
+    # Создание DataFrame из словаря
+    data = {
+        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
+        'Возраст': [25, 27, 22, 33],
+        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Петербург']
+    }
+    df = pd.DataFrame(data)
     print(df)
 
-    df = pd.DataFrame(data=[[4, 7, 10], [5, 8, 11], [6, 9, 12]], index=[1, 2, 3], columns=['a', 'b', 'c'])
+    # Создание DataFrame из списка списков
+    data_list = [['Никита', 25, 'Москва'], ['Лиза', 27, 'Москва'], ['Степа', 22, 'Казань'], ['Егор', 33, 'Петербург']]
+    df2 = pd.DataFrame(data_list, columns=['Имя', 'Возраст', 'Город'])
+    print(df2)
+
+    print(df['Имя'])  # Получает столбец 'Имя'
+    print(df.iloc[0])  # Получает первую строку
+
+    young_people = df[df['Возраст'] < 30]  # Фильтрует людей младше 30
+    print(young_people)
+
+    df['Занятие'] = ['Инженер', 'Менеджер', 'Студент', 'Экономист']
     print(df)
-    print(df.index, df.columns)
 
-    df = pd.DataFrame(
-        data={"a": [4, 5, 6], "b": [7, 8, 9], "c": [10, 11, 12]},
-        index=pd.MultiIndex.from_tuples([('d', 1), ('d', 2), ('e', 2)], names=['n', 'v'])
-    )
+    df = df.drop('Занятие', axis=1)  # Удаляет столбец 'Занятие'
+    print(df)
+
+    average_age = df['Возраст'].mean()
+    print(f"Средний возраст: {average_age}")
     print(df)
 
 
-def read_file():
+def read_from_file():
     data = pd.read_csv('train.csv')
     # df_excel = pd.read_excel('data.xlsx')
     # data.to_csv('train_new.csv', index=False)
@@ -83,6 +102,26 @@ def read_file():
     print(df.sort_values(by=['Name', 'Age'], ascending=[True, False]))
     df = pd.DataFrame({'Value': [3, None, 2, None, 1]})
     print(df.sort_values(by='Value', na_position='first'))
+
+
+def export_to_file():
+    # Создаем пример DataFrame
+    data = {
+        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
+        'Возраст': [23, 22, 19, 26],
+        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Питер']
+    }
+
+    df = pd.DataFrame(data)
+
+    # Экспортируем DataFrame в CSV файл
+    df.to_csv('output.csv', index=False, encoding='utf-8')
+
+    # Экспортируем DataFrame в Excel файл
+    df.to_excel('output.xlsx', index=False, engine='openpyxl')
+
+    # Экспортируем DataFrame в JSON файл
+    df.to_json('output.json', orient='records', lines=True, force_ascii=False)
 
 
 def attrition_dep():
@@ -159,10 +198,10 @@ def data_frame_seaborn():
         (exc['diet'] == 'no fat') &
         (exc['kind'] == 'rest') &
         (exc['pulse'] > exc['pulse'].mean())
-    ]['id']
+        ]['id']
     print(len(answer.unique()))
-
 
 
 if __name__ == '__main__':
     print()
+    export_to_file()
