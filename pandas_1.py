@@ -1,127 +1,6 @@
+import numpy as np
 import pandas as pd
 import seaborn
-
-
-def create_series_df():
-    # Создание Series из списка
-    s1 = pd.Series([1, 2, 3, 4, 5])
-    print(s1)
-
-    # Создание Series с определенным индексом
-    s2 = pd.Series([10, 20, 30], index=['a', 'b', 'c'])
-    print(s2)
-
-    print(s1[0])  # Выводит первый элемент
-    print(s2['b'])  # Выводит элемент с индексом 'b'
-
-    s3 = s1 + 10
-    print(s3)  # К каждому элементу добавляется 10
-
-    # Создание DataFrame из словаря
-    data = {
-        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
-        'Возраст': [25, 27, 22, 33],
-        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Петербург']
-    }
-    df = pd.DataFrame(data)
-    print(df)
-
-    # Создание DataFrame из списка списков
-    data_list = [['Никита', 25, 'Москва'], ['Лиза', 27, 'Москва'], ['Степа', 22, 'Казань'], ['Егор', 33, 'Петербург']]
-    df2 = pd.DataFrame(data_list, columns=['Имя', 'Возраст', 'Город'])
-    print(df2)
-
-    print(df['Имя'])  # Получает столбец 'Имя'
-    print(df.iloc[0])  # Получает первую строку
-
-    young_people = df[df['Возраст'] < 30]  # Фильтрует людей младше 30
-    print(young_people)
-
-    df['Занятие'] = ['Инженер', 'Менеджер', 'Студент', 'Экономист']
-    print(df)
-
-    df = df.drop('Занятие', axis=1)  # Удаляет столбец 'Занятие'
-    print(df)
-
-    average_age = df['Возраст'].mean()
-    print(f"Средний возраст: {average_age}")
-    print(df)
-
-
-def read_from_file():
-    data = pd.read_csv('train.csv')
-    # df_excel = pd.read_excel('data.xlsx')
-    # data.to_csv('train_new.csv', index=False)
-    # data.to_excel('train_new.xlsx', index=False)
-
-    print(data.loc[1])
-    print(data['Age'])
-    print(data['Age'].info())
-    print(data['Pclass'].unique())
-
-    data['Alone'] = data['FamilySize'].apply(lambda x: 1 if x == 0 else 0)
-
-    print(data[['FamilySize', 'Alone']].head())
-    print(data[['FamilySize', 'SibSp', 'Parch']])
-    data = data.drop(columns=['Cabin', 'Embarked'])
-    data.drop(columns=['Cabin'], inplace=True)
-
-    print(data.isnull().sum())
-    print(data['Age'].info())
-
-    data['Age'] = data['Age'].fillna(data['Age'].mean())
-    print(data['Age'])
-    data['Age'] = data['Age'].fillna(data['Age'].median())
-
-    data['Age'] = data['Age'].fillna(data.groupby('Sex')['Age'].transform('median'))
-    print(data['Age'][:100])
-    data['Embarked'].mode()
-    print(data.groupby('Pclass')['Fare'].mean())
-    print(data.groupby(['Sex', 'Pclass'])['Age'].mean())
-
-    print(data[
-              (data['Sex'] == 'female') &
-              (data['Age'] > 18) &
-              (data['Age'] < 25) &
-              (data['SibSp'] == 0) &
-              (data['Parch'] == 0) &
-              (data['Survived'] == 0)
-              ].shape
-          )
-
-    print(data[(data['SibSp'] + data['Parch'] >= 2) & (data['Pclass'] == 3)].shape)
-    print(data[data['Age'] > data['Age'].mean()]['Name'].head())
-
-    print(data.groupby(['Pclass', 'Sex'])['Age'].mean())
-    print(round(28.722973, 2))
-
-    df = pd.DataFrame({'Name': ['Alice', 'Bob', 'Charlie'], 'Age': [25, 30, 20]})
-    df_sorted = df.sort_values(by='Age')
-    print(df.sort_values(by='Age', ascending=False))
-
-    print(df.sort_values(by=['Name', 'Age'], ascending=[True, False]))
-    df = pd.DataFrame({'Value': [3, None, 2, None, 1]})
-    print(df.sort_values(by='Value', na_position='first'))
-
-
-def export_to_file():
-    # Создаем пример DataFrame
-    data = {
-        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
-        'Возраст': [23, 22, 19, 26],
-        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Питер']
-    }
-
-    df = pd.DataFrame(data)
-
-    # Экспортируем DataFrame в CSV файл
-    df.to_csv('output.csv', index=False, encoding='utf-8')
-
-    # Экспортируем DataFrame в Excel файл
-    df.to_excel('output.xlsx', index=False, engine='openpyxl')
-
-    # Экспортируем DataFrame в JSON файл
-    df.to_json('output.json', orient='records', lines=True, force_ascii=False)
 
 
 def attrition_dep():
@@ -202,6 +81,266 @@ def data_frame_seaborn():
     print(len(answer.unique()))
 
 
+def create_series_df():
+    # Создание Series из списка
+    s1 = pd.Series([1, 2, 3, 4, 5])
+    print(s1)
+
+    # Создание Series с определенным индексом
+    s2 = pd.Series([10, 20, 30], index=['a', 'b', 'c'])
+    print(s2)
+
+    print(s1[0])  # Выводит первый элемент
+    print(s2['b'])  # Выводит элемент с индексом 'b'
+
+    s3 = s1 + 10
+    print(s3)  # К каждому элементу добавляется 10
+
+    # Создание DataFrame из словаря
+    data = {
+        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
+        'Возраст': [25, 27, 22, 33],
+        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Петербург']
+    }
+    df = pd.DataFrame(data)
+    print(df)
+
+    # Создание DataFrame из списка списков
+    data_list = [['Никита', 25, 'Москва'], ['Лиза', 27, 'Москва'], ['Степа', 22, 'Казань'], ['Егор', 33, 'Петербург']]
+    df2 = pd.DataFrame(data_list, columns=['Имя', 'Возраст', 'Город'])
+    print(df2)
+
+    print(df['Имя'])  # Получает столбец 'Имя'
+    print(df.iloc[0])  # Получает первую строку
+
+    young_people = df[df['Возраст'] < 30]  # Фильтрует людей младше 30
+    print(young_people)
+
+    df['Занятие'] = ['Инженер', 'Менеджер', 'Студент', 'Экономист']
+    print(df)
+
+    df = df.drop('Занятие', axis=1)  # Удаляет столбец 'Занятие'
+    print(df)
+
+    average_age = df['Возраст'].mean()
+    print(f"Средний возраст: {average_age}")
+    print(df)
+
+
+def read_from_file():
+    data = pd.read_csv('train.csv')
+    # df_excel = pd.read_excel('data.xlsx')
+    # data.to_csv('train_new.csv', index=False)
+    # data.to_excel('train_new.xlsx', index=False)
+    data = {
+        'Имя': ['Аня', 'Борис', 'Света', 'Иван', 'Оля'],
+        'Возраст': [23, 34, 29, 24, 27],
+        'Город': ['Москва', 'Питер', 'Новосибирск', 'Екатеринбург', 'Уфа']
+    }
+
+    df = pd.DataFrame(data)
+    print(df)
+
+    # Установка имени в качестве индекса
+    df.set_index('Имя', inplace=True)
+
+    # Индексирование по меткам
+    print(df.loc['Аня'])  # Получение данных для Ани
+
+    # Индексирование по позиции
+    print(df.iloc[0])  # Получение первой строки
+    # Создаем новый DataFrame
+
+    # Логическая индексация: выбираем строки, где возраст больше 25
+    filtered_df = df[df['Возраст'] > 25]
+    print(filtered_df)
+
+    # Теперь можно получить возраст Бориса
+    age_boris = df.loc['Борис', 'Возраст']  # Индексирование по меткам
+    print(f'Возраст Бориса: {age_boris}')
+
+    # Получение значения по позиции
+    city_second = df.iloc[1, 1]  # Индексирование по позициям, 1 - вторая строка, 1 - второй столбец
+    print(f'Город на второй позиции: {city_second}')
+    # Создаем новый DataFrame
+
+    # Выбор людей старше 25 лет, которые не живут в Москве
+    filtered_df = df[(df['Возраст'] > 25) & (df['Город'] != 'Москва')]
+    print(filtered_df)
+
+    # Создаем новый DataFrame с многоуровневым индексом
+    arrays = [
+        ['Россия', 'Россия', 'США', 'США'],
+        ['Москва', 'Питер', 'Нью-Йорк', 'Лос-Анджелес']
+    ]
+    index = pd.MultiIndex.from_arrays(arrays, names=('Страна', 'Город'))
+
+    data = {
+        'Население': [12.5, 5.4, 8.4, 4.0],
+        'Площадь (км²)': [2511, 1439, 789, 503]
+    }
+
+    df_multi = pd.DataFrame(data, index=index)
+    print(df_multi)
+
+    # Выбор данных для конкретной страны
+    print(df_multi.loc['Россия'])
+
+
+def null_change():
+    data = {
+        'Имя': ['Аня', 'Борис', 'Света', None],
+        'Возраст': [23, None, 29, 24],
+        'Город': ['Москва', 'Питер', None, 'Екатеринбург']
+    }
+
+    df = pd.DataFrame(data)
+
+    # Проверка отсутствующих данных
+    print(df.isnull())
+
+    # Заполнение отсутствующих данных в столбце 'Город'
+    df['Город'] = df['Город'].fillna('Неизвестно')
+
+    # Заполнение отсутствующих данных в столбце 'Возраст' нулём
+    df['Возраст'] = df['Возраст'].fillna(0)
+
+    print(df)
+
+    # Заполнение отсутствующих данных средним значением в столбце 'Возраст'
+    df['Возраст'] = df['Возраст'].fillna(df['Возраст'].mean())
+
+    print(df)
+
+    # Заполнение отсутствующих данных предыдущими значениями
+    df['Возраст'] = df['Возраст'].ffill()
+    print(df)
+
+    # Удаление строк с отсутствующими значениями
+    df_cleaned = df.dropna()
+    print(df_cleaned)
+
+    # Удаление столбцов с отсутствующими значениями
+    df_cleaned_columns = df.dropna(axis=1)
+    print(df_cleaned_columns)
+
+
+def convert_type():
+    # Создаем DataFrame
+    data = {
+        'Имя': ['Аня', 'Борис', 'Света'],
+        'Возраст': ['23', '34', '29'],  # Возраст представлен строками
+        'Рост': ['1.65', '1.80', '1.75']  # Рост тоже строками
+    }
+
+    df = pd.DataFrame(data)
+
+    # Проверка типов данных
+    print(df.dtypes)
+
+    # Изменение типа данных
+    df['Возраст'] = df['Возраст'].astype(int)  # Преобразование в целое число
+    df['Рост'] = df['Рост'].astype(float)  # Преобразование в число с плавающей точкой
+
+    # Проверка типов данных после преобразования
+    print(df.dtypes)
+
+    # Применим функцию, чтобы получить квадрат возраста
+    df['Возраст_квадрат'] = df['Возраст'].apply(lambda x: x ** 2)
+    print(df)
+
+    # Суммируем значения в строках
+    df['Сумма'] = df.apply(lambda row: row['Возраст'] + row['Рост'],
+                           axis=1)  # axis=1 означает, что функция применяется к строкам
+    print(df)
+
+    # Применяем функцию для преобразования имен в верхний регистр
+    df['Имя'] = df['Имя'].map(lambda x: x.upper())
+    print(df)
+
+    # Применяем функцию, чтобы округлить рост до одного знака после запятой
+    df['Рост'] = df['Рост'].map(lambda x: round(x, 1))
+    print(df)
+
+
+def export_to_file():
+    # Создаем пример DataFrame
+    data = {
+        'Имя': ['Никита', 'Лиза', 'Степа', 'Егор'],
+        'Возраст': [23, 22, 19, 26],
+        'Город': ['Мадрид', 'Мадрид', 'Москва', 'Питер']
+    }
+
+    df = pd.DataFrame(data)
+
+    # Экспортируем DataFrame в CSV файл
+    df.to_csv('output.csv', index=False, encoding='utf-8')
+
+    # Экспортируем DataFrame в Excel файл
+    df.to_excel('output.xlsx', index=False, engine='openpyxl')
+
+    # Экспортируем DataFrame в JSON файл
+    df.to_json('output.json', orient='records', lines=True, force_ascii=False)
+
+
+def students_80_more_points():
+    data = {
+        'Имя': ['Аня', 'Борис', 'Света', 'Иван'],
+        'Возраст': [23, 34, 29, 24],
+        'Город': ['Москва', 'Питер', 'Новосибирск', 'Екатеринбург'],
+        'Оценка по математике': [75, 85, 90, 60],
+        'Оценка по науке': [81, 78, 88, 70]
+    }
+
+    df = pd.DataFrame(data)
+    df.set_index('Имя', inplace=True)
+    answer = df[df['Оценка по науке'] > 80]
+    print(answer)
+
+
+def add_new_column_delete_old():
+    data = {
+        'Имя': ['Аня', 'Борис', 'Света', 'Иван'],
+        'Возраст': [23, 34, 29, 24],
+        'Город': ['Москва', 'Питер', 'Новосибирск', 'Екатеринбург'],
+        'Оценка по математике': [75, 85, 90, 60],
+        'Оценка по науке': [80, 78, 88, 70]
+    }
+
+    df = pd.DataFrame(data)
+    df.set_index('Имя', inplace=True)
+
+    df['Средняя оценка'] = df.apply(lambda row: (row['Оценка по математике'] + row['Оценка по науке']) / 2, axis=1)
+    df = df.drop(['Оценка по математике', 'Оценка по науке'], axis=1)
+    print(df)
+
+
+def change_data():
+    data = {
+        'Название продукта': ['Яблоки', 'Бананы', 'Груши', 'Апельсины'],
+        'Цена': [100, 50, np.nan, 80],
+        'Количество на складе': [30, np.nan, 20, 25],
+        'Рейтинг': [4.5, np.nan, 3.8, 4.2]
+    }
+
+    df = pd.DataFrame(data)
+
+    df['Количество на складе'] = df['Количество на складе'].fillna(0)
+    df['Рейтинг'] = df['Рейтинг'].fillna(df['Рейтинг'].mean())
+
+    print(df)
+
+    # Изменение типа данных
+    # df['Цена'] = df['Цена'].astype(int)  # Преобразование в целое число
+    df['Количество на складе'] = df['Количество на складе'].astype(int)
+
+    df['Общая стоимость'] = df.apply(lambda row: (row['Количество на складе'] * row['Цена']), axis=1)
+
+    # Проверка типов данных после преобразования
+    print(df.dtypes)
+    print(df)
+
+
 if __name__ == '__main__':
     print()
-    export_to_file()
+    change_data()
