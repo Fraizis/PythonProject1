@@ -262,6 +262,22 @@ def convert_type():
     df['Рост'] = df['Рост'].map(lambda x: round(x, 1))
     print(df)
 
+    # Среднее значение
+    mean_age = df['Возраст'].mean()
+    print('Средний возраст:', mean_age)
+
+    # Медиана зарплаты
+    median_salary = df['Зарплата'].median()
+    print('Медианная зарплата:', median_salary)
+
+    # Стандартное отклонение по возрасту
+    std_age = df['Возраст'].std()
+    print('Стандартное отклонение по возрасту:', std_age)
+
+    # Мода для города
+    mode_city = df['Город'].mode()
+    print('Наиболее распространённый город:', mode_city.iloc[0])
+
 
 def export_to_file():
     # Создаем пример DataFrame
@@ -328,10 +344,6 @@ def change_data():
     df['Количество на складе'] = df['Количество на складе'].fillna(0)
     df['Рейтинг'] = df['Рейтинг'].fillna(df['Рейтинг'].mean())
 
-    print(df)
-
-    # Изменение типа данных
-    # df['Цена'] = df['Цена'].astype(int)  # Преобразование в целое число
     df['Количество на складе'] = df['Количество на складе'].astype(int)
 
     df['Общая стоимость'] = df.apply(lambda row: (row['Количество на складе'] * row['Цена']), axis=1)
@@ -341,6 +353,88 @@ def change_data():
     print(df)
 
 
+def aggregate_data():
+    data = {
+        'Город': ['Москва', 'Питер', 'Москва', 'Питер', 'Екатеринбург'],
+        'Продажи': [100, 150, 200, 130, 170]
+    }
+
+    df = pd.DataFrame(data)
+
+    grouped = df.groupby('Город').sum()
+    print(grouped)
+
+    result = df.groupby('Город').aggregate({'Продажи': ['sum', 'mean', 'count']})
+    print(result)
+
+    pivot = pd.pivot_table(df, values='Продажи', index='Город', aggfunc='sum')
+    print(pivot)
+
+    data = {
+        'Город': ['Москва', 'Питер', 'Москва', 'Питер'],
+        'Товар': ['А', 'А', 'Б', 'Б'],
+        'Продажи': [100, 150, 200, 130]
+    }
+
+    df = pd.DataFrame(data)
+    pivot = df.pivot(index='Город', columns='Товар', values='Продажи')
+    print(pivot)
+
+    data = {
+        'Возраст': [25, 30, 35, 40, None],
+        'Зарплата': [50000, 60000, 70000, 80000, 90000],
+        'Город': ['Москва', 'Питер', 'Москва', 'Питер', 'Екатеринбург']
+    }
+
+    df = pd.DataFrame(data)
+
+    # Описание числовых данных
+    print(df.describe())
+
+
+def total_sale_sum_category():
+    data = {
+        'Дата': [
+            '2024-01-01', '2024-01-02', '2024-01-03',
+            '2024-01-04', '2024-01-05', '2024-01-06',
+            '2024-01-07', '2024-01-08'
+        ],
+        'Категория': [
+            'Электроника', 'Одежда', 'Электроника',
+            'Одежда', 'Спорт', 'Электроника',
+            'Спорт', 'Одежда'
+        ],
+        'Продажи': [
+            20000, 15000, 22000,
+            18000, 30000, 25000,
+            27000, 20000
+        ],
+        'Регион': [
+            'Москва', 'Питер', 'Москва',
+            'Екатеринбург', 'Питер', 'Москва',
+            'Екатеринбург', 'Питер'
+        ]
+    }
+
+    df = pd.DataFrame(data)
+
+    result = df.groupby('Категория', as_index=False).aggregate({'Продажи': 'sum'})
+    # print(result)
+
+    res = df.groupby(['Регион', 'Категория'], as_index=False)['Продажи'].mean()
+    # print(res)
+
+    group = df.groupby(["Регион", "Категория"], as_index=False).aggregate({'Продажи': 'mean'})
+    # print(group)
+
+    pivot = pd.pivot_table(df, values='Продажи', index=['Регион', 'Категория'], aggfunc='mean').reset_index()
+    print(pivot)
+
+
+def avg_sale_region():
+    ...
+
+
 if __name__ == '__main__':
     print()
-    change_data()
+    total_sale_sum_category()
