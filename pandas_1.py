@@ -419,22 +419,52 @@ def total_sale_sum_category():
     df = pd.DataFrame(data)
 
     result = df.groupby('Категория', as_index=False).aggregate({'Продажи': 'sum'})
-    # print(result)
+    print(result)
 
     res = df.groupby(['Регион', 'Категория'], as_index=False)['Продажи'].mean()
-    # print(res)
+    print(res)
 
     group = df.groupby(["Регион", "Категория"], as_index=False).aggregate({'Продажи': 'mean'})
-    # print(group)
+    print(group)
 
     pivot = pd.pivot_table(df, values='Продажи', index=['Регион', 'Категория'], aggfunc='mean').reset_index()
     print(pivot)
 
 
-def avg_sale_region():
-    ...
+def exercise_work():
+    hours = [2, 3, 1, 4, 2, 3, 5, 2, 4, 1,
+         3, 2, 2, 4, 3, 0, 1, 5, 2, 3,
+         4, 4, 5, 2, 3, 2, 1, 0, 5, 3]
+
+    data = {'hours': hours}
+    df = pd.DataFrame(data)
+    print(df.mean())
+    print(df.median())
+
+    print(np.mean(hours))
+    print(np.median(hours))
+
+
+def total_sum_category_price():
+    data = {
+        'Product': ['Товар A', 'Товар B', 'Товар C', 'Товар D', 'Товар E'],
+        'Category': ['Категория 1', 'Категория 1', 'Категория 2', 'Категория 2', 'Категория 3'],
+        'Quantity': [5, 10, 3, 8, 7],
+        'Price': [20.0, 15.0, 50.0, 30.0, 25.0],
+        'Date': pd.date_range(start='2024-09-01', periods=5)
+    }
+
+    df = pd.DataFrame(data)
+    # df['Revenue'] = df.apply(lambda row: (row['Price'] * row['Quantity']), axis=1)
+    df['Revenue'] = df['Price'] * df['Quantity']
+    print(df)
+
+    group = df.groupby("Category", as_index=False).aggregate({'Revenue': 'sum'})
+    print(group)
+
+
 
 
 if __name__ == '__main__':
     print()
-    total_sale_sum_category()
+    total_sum_category_price()

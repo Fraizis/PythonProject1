@@ -396,9 +396,7 @@ def mask_numpy():
     filtered = a[(a > 20) & (a < 50)]
     print(filtered)  # Output: [30 40]
 
-
-if __name__ == '__main__':
-    print()
+def exc_home():
     a = numpy.array([x for x in range(16)]).reshape(4, 4)
     # res = numpy.vsplit(a, 2)
     array_2d = numpy.array([[12, 25, 7, 45],
@@ -407,3 +405,10 @@ if __name__ == '__main__':
                             [15, 9, 33, 42]])
     array_2d[array_2d < 20] = 0
     print(array_2d)
+
+
+if __name__ == '__main__':
+    print()
+
+    array_1d = numpy.array([0, 2, 4, 6, 8, 10, 12, 14, 16, 18]).reshape(5, 2)
+    print(array_1d)
