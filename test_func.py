@@ -718,8 +718,48 @@ def correct_sequence():
         print('Последовательность неправильная')
 
 
+class Factorization:
+    def fact(self, n):
+        if n <= 1:
+            return n
+
+        n *= self.fact(n - 1)
+
+        return n
+
+    def prim_facts(self, n: int) -> list[int]:
+        factors = []
+        divisor = 2
+
+        while n > 1:
+            while n % divisor == 0:
+                factors.append(divisor)
+                n //= divisor
+            divisor += 1
+
+        return factors
+
+    def get_factorization_str(self, n):
+        fact = self.fact(n)
+        print(fact)
+        prim = self.prim_facts(fact)
+        print(prim)
+        counter = Counter(prim)
+        print(counter)
+
+        a = [f'{k}^{v}' if v > 1 else f'{k}' for k, v in counter.items()]
+
+        answer = ' * '.join(a)
+
+        return answer
+
+
 if __name__ == '__main__':
     print()
-    print(correct_sequence())
+
+    # print(correct_sequence())
     # print(y)
     # print(Counter(y))
+    f = Factorization()
+
+    print(f.get_factorization_str(12))
