@@ -217,3 +217,28 @@
 #     FOREIGN KEY (message_id) REFERENCES channel_messages (id),
 #     FOREIGN KEY (user_id) REFERENCES users (id)
 # );
+
+
+# DROP TABLE IF EXISTS stories;
+# CREATE TABLE stories (
+# 	id SERIAL,
+#     user_id BIGINT UNSIGNED NOT NULL,
+#     caption VARCHAR(140),
+#     filename VARCHAR(100),
+#     views_count INT UNSIGNED,
+#     created_at DATETIME DEFAULT NOW(),
+#
+#     FOREIGN KEY (user_id) REFERENCES users (id)
+# );
+#
+#
+# DROP TABLE IF EXISTS stories_likes;
+# CREATE TABLE stories_likes (
+# 	id SERIAL,
+# 	story_id BIGINT UNSIGNED NOT NULL,
+#     user_id BIGINT UNSIGNED NOT NULL,
+#     created_at DATETIME DEFAULT NOW(),
+#
+#     FOREIGN KEY (user_id) REFERENCES users (id),
+#     FOREIGN KEY (story_id) REFERENCES stories (id)
+# );
