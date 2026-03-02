@@ -1,3 +1,41 @@
+# DML
+
+# -- ОЧЕНЬ ОПАСНО! WHERE отсутствует!
+# DELETE FROM Products;
+
+# UPDATE Products
+# SET Price = 1000;
+
+
+# Безопасный рабочий процесс перед UPDATE:
+#   WHERE
+#     Проверка:
+#       SELECT *
+#       FROM Products
+#       WHERE ProductID = 3;
+#       (убедились, что нашли нужную строку).
+
+#     Выполнение:
+#       UPDATE Products
+#       SET Price = 1000
+#       WHERE ProductID = 3;
+#       (теперь мы уверены в условии).
+
+
+# INSERT INTO missions (
+#     id,
+#     name,
+#     planet,
+#     captain
+# )
+# VALUES (
+#     1,
+#     'Mars Search',
+#     'Mars',
+#     'John'
+# );
+
+
 # SELECT MIN(YEAR(birthday))
 # FROM users;
 
