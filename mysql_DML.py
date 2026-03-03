@@ -328,3 +328,28 @@
 #     Customers AS C
 # INNER JOIN
 #     Orders AS O ON C.CustomerID = O.CustomerID;
+
+
+# LEFT JOIN
+
+# SELECT
+#   d.dept_name
+# FROM
+#   departments AS d
+# LEFT JOIN
+#   employees AS e
+#   ON d.dept_id = e.dept_id
+# WHERE
+#   e.emp_name IS NULL;
+
+
+# SELECT
+#     d.dept_name,
+#     COUNT(e.emp_name)
+# FROM
+#     departments AS d
+# LEFT JOIN
+#     employees AS e
+#     ON e.dept_id = d.dept_id
+# GROUP BY
+#     d.dept_name;
