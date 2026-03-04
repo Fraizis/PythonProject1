@@ -1,5 +1,23 @@
 # DML
 
+# INSERT
+
+# INSERT INTO missions
+# (
+#     id,
+#     name,
+#     planet,
+#     captain
+# )
+# VALUES
+# (
+#     1,
+#     'Mars Search',
+#     'Mars',
+#     'John'
+# );
+
+
 # Порядок ключевых слов в нем строго определен:
 #     SELECT [ DISTINCT ] <список_столбцов> [ AS <псевдонимы> ]
 #     FROM <имя_таблицы>
@@ -33,24 +51,6 @@
 #       SET Price = 1000
 #       WHERE ProductID = 3;
 #       (теперь мы уверены в условии).
-
-
-# INSERT
-
-# INSERT INTO missions
-# (
-#     id,
-#     name,
-#     planet,
-#     captain
-# )
-# VALUES
-# (
-#     1,
-#     'Mars Search',
-#     'Mars',
-#     'John'
-# );
 
 
 # SELECT MIN(YEAR(birthday))
@@ -353,3 +353,119 @@
 #     ON e.dept_id = d.dept_id
 # GROUP BY
 #     d.dept_name;
+
+
+# RIGHT JOIN
+
+# SELECT e.emp_name, o.city
+# FROM employees AS e
+# RIGHT JOIN offices AS o ON e.office_id = o.office_id;
+
+
+# SELECT o.city
+# FROM employees AS e
+# RIGHT JOIN offices AS o ON e.office_id = o.office_id
+# WHERE e.emp_name IS NULL;
+
+
+# SELECT
+#     o.city,
+#     COUNT(e.emp_name) AS employee_count
+# FROM
+#     employees AS e
+# RIGHT JOIN
+#     offices AS o
+#     ON e.office_id = o.office_id
+# GROUP BY
+#     o.city;
+
+
+# SELECT
+#     e.emp_name, o.city
+# FROM
+#     offices AS o
+# LEFT JOIN
+#     employees AS e
+#     ON e.office_id = o.office_id;
+#
+# SELECT
+#     e.emp_name, o.city
+# FROM
+#     employees AS e
+# RIGHT JOIN
+#     offices AS o
+#     ON e.office_id = o.office_id;
+
+
+# Эмуляция FULL OUTER JOIN с помощью UNION
+
+# SELECT
+#     e.emp_name,
+#     o.city
+# FROM
+#     employees AS e
+# LEFT JOIN
+#     offices AS o
+#     ON e.office_id = o.office_id
+# UNION
+# SELECT
+#     e.emp_name,
+#     o.city
+# FROM
+#     employees AS e
+# RIGHT JOIN
+#     offices AS o
+#     ON e.office_id = o.office_id;
+
+
+# JOIN 3 таблиц
+
+# select
+#     product_name
+# from order_items as OI
+# join
+#     products as P on OI.product_id = P.product_id
+# where OI.order_id = 1001;
+
+
+# SELECT customer_name, order_date, product_name
+# FROM customers
+# JOIN orders using(customer_id)
+# JOIN order_items using(order_id)
+# JOIN products using(product_id);
+
+
+# Самый дорогой товар купленный клиентом
+# SELECT
+#     p.product_name
+# FROM
+#     products AS p
+# JOIN
+#     order_items AS oi
+#     ON p.product_id = oi.product_id
+# JOIN
+#     orders AS o
+#     ON oi.order_id = o.order_id
+# JOIN
+#     customers AS c
+#     ON o.customer_id = c.customer_id
+# WHERE
+#     c.customer_name = 'Иван Петров'
+# ORDER BY
+#     p.price DESC
+# LIMIT 1;
+
+
+# SELECT
+#   c.customer_name,
+#   SUM(oi.quantity * p.price) AS total_spent
+# FROM
+#   customers c
+# JOIN
+#   orders o USING(customer_id)
+# JOIN
+#   order_items oi USING(order_id)
+# JOIN
+#   products p USING(product_id)
+# GROUP BY
+#   c.customer_name;
