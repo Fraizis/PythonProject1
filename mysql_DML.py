@@ -469,3 +469,126 @@
 #   products p USING(product_id)
 # GROUP BY
 #   c.customer_name;
+
+
+# Подзапросы
+
+# SELECT Name
+# FROM Customers
+# WHERE CustomerID IN ( -- Шаг 4: Находим имена клиентов по их ID
+#     SELECT CustomerID
+#     FROM Orders
+#     WHERE OrderID IN ( -- Шаг 3: Находим ID заказов, в которых были нужные товары
+#         SELECT OrderID
+#         FROM OrderItems
+#         WHERE ProductID IN ( -- Шаг 2: Находим ID товаров из нужной категории
+#             SELECT ProductID
+#             FROM Products
+#             WHERE Category = 'Electronics' -- Шаг 1: Находим ID товаров
+#         )
+#     )
+# );
+
+
+# SELECT emp_name
+# FROM employees
+# WHERE dept_id = (
+#     SELECT dept_id
+#     FROM employees
+#     WHERE emp_name = 'Борис'
+# )
+# AND emp_name != 'Борис';
+
+
+# сотрудники с самой высокой зарплатой в компании
+
+# SELECT emp_name, salary
+# FROM employees
+# WHERE salary IN (
+#     SELECT MAX(salary)
+#     FROM employees
+# );
+
+# подзапросы из FROM
+
+# SELECT
+#     filtered_users.name -- Обращаемся к столбцу через псевдоним производной таблицы
+# FROM
+#     (
+#         SELECT id, name, city FROM users WHERE city = 'Moscow'
+#     ) AS filtered_users; -- Даем имя нашей виртуальной таблице
+
+
+
+# Найти среднюю сумму одного заказа
+
+# SELECT
+#     AVG(order_total) AS average_order_value -- ЭТАП 2: Находим среднее от сумм
+# FROM
+#     (
+#         -- --- Начало подзапроса (ЭТАП 1) ---
+#         SELECT
+#             order_id,
+#             SUM(quantity * price_per_item) AS order_total
+#         FROM
+#             order_items
+#         GROUP BY
+#             order_id
+#         -- --- Конец подзапроса ---
+#     ) AS orders_with_totals; -- Даем имя нашей виртуальной таблице
+
+
+# SELECT emp_name
+# FROM (
+#     SELECT emp_name, salary
+#     FROM employees
+#     WHERE dept_id = 1
+# ) AS emp_names
+# WHERE salary > 145000;
+
+
+# SELECT AVG(sum_price.total_value) AS avg_order_value
+# FROM (
+#     SELECT SUM(quantity * price) AS total_value
+#     FROM order_items
+#     GROUP BY order_id
+# ) AS sum_price;
+
+
+# SELECT d.dept_name, ds.avg_salary
+# FROM departments AS d
+# JOIN (
+#     SELECT
+#         dept_id,
+#         AVG(salary) AS avg_salary
+#     FROM
+#         employees
+#     GROUP BY
+#         dept_id
+# ) AS ds
+# ON d.dept_id = ds.dept_id;
+
+
+# Коррелированные подзапросы
+
+# SELECT
+#     name,
+#     department,
+#     salary
+# FROM
+#     employees AS e1 -- Даем псевдоним внешней таблице, это обязательно!
+# WHERE
+#     salary > (
+#         -- --- Начало коррелированного подзапроса ---
+#         SELECT AVG(salary)
+#         FROM employees AS e2
+#         WHERE e2.department = e1.department -- Ключевая "корреляция"!
+#         -- --- Конец подзапроса ---
+#     );
+
+
+# SELECT ...
+# FROM table1 AS t1
+# WHERE EXISTS (
+#     SELECT 1 FROM table2 AS t2 WHERE t2.key = t1.key -- Коррелированный подзапрос
+# );
