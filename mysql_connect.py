@@ -13,8 +13,14 @@ dataBase = mysql.connector.connect(
 cursorObject = dataBase.cursor()
 
 
+
 # creating database
 # cursorObject.execute("CREATE DATABASE gfg")
+
+# create user
+
+# query = "CREATE USER 'pythonuser'@'localhost' IDENTIFIED BY 'pythonpwd123'"
+# cursorObject.execute(query)
 
 # creating table
 # cursorObject.execute("USE gfg")

@@ -587,8 +587,40 @@
 #     );
 
 
+# EXISTS
+
 # SELECT ...
 # FROM table1 AS t1
 # WHERE EXISTS (
 #     SELECT 1 FROM table2 AS t2 WHERE t2.key = t1.key -- Коррелированный подзапрос
+# );
+
+# -- Это эффективная и надежная замена LEFT JOIN ... WHERE ... IS NULL
+# SELECT Name
+# FROM Customers AS C
+# WHERE NOT EXISTS (
+#     SELECT 1
+#     FROM Orders AS O
+#     WHERE O.CustomerID = C.CustomerID
+# );
+
+# SELECT * FROM Orders
+# WHERE EXISTS (SELECT 1 FROM Products WHERE Products.id = Orders.product_id);
+
+
+# SELECT *
+# FROM orders AS o1
+# WHERE order_date >= (
+#     SELECT MAX(order_date)
+#     FROM orders AS o2
+#     WHERE o2.customer_id = o1.customer_id
+# );
+
+
+# SELECT *
+# FROM users AS u1
+# WHERE EXISTS (
+#     SELECT 1
+#     FROM users AS u2
+#     WHERE u1.email = u2.email AND u1.registration_date < u2.registration_date
 # );
