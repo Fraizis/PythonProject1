@@ -144,6 +144,40 @@
 # GROUP BY birth_year;
 
 
+# Посчитать общую сумму продаж для категорий Hardware и Software и
+# вывести их в отдельных столбцах в одной строке.
+#
+# Запрос с условной агрегацией:
+#
+# SELECT
+#     SUM(CASE WHEN product_category = 'Hardware' THEN sale_amount ELSE 0 END) AS hardware_sales,
+#     SUM(CASE WHEN product_category = 'Software' THEN sale_amount ELSE 0 END) AS software_sales
+# FROM
+#     sales;
+
+
+# Другой пример с COUNT:
+# Можно посчитать количество товаров в каждой категории.
+#
+# SELECT
+#     COUNT(CASE WHEN product_category = 'Hardware' THEN 1 END) AS hardware_items,
+#     COUNT(CASE WHEN product_category = 'Software' THEN 1 END) AS software_items
+# FROM
+#     sales;
+
+
+# Отсортировать задачи в особом порядке
+
+# SELECT *
+# FROM tasks
+# ORDER BY
+#     CASE
+#         WHEN status = 'In Progress' THEN 1
+#         WHEN status = 'New' THEN 2
+#         WHEN status = 'Done' THEN 3
+#     END;
+
+
 # -- подсчет количества пользователей в каждом поколении
 # SELECT
 #     COUNT(*) AS cnt,
@@ -255,6 +289,22 @@
 #     DAY(order_date) AS sale_day
 # FROM
 #     sales;
+
+# Найти дату, которая будет через 7 дней после заказа (срок доставки).
+
+# SELECT '2025-10-26'::date + INTERVAL '7 day' AS delivery_date; -- `::date` - это
+# приведение к типу даты в PostgreSQL
+
+# SELECT '2025-10-26'::date - INTERVAL '1 month' AS month_before;
+
+# DATEDIFF(day, <дата_1>, <дата_2>)
+
+
+# Найти все заказы, сделанные за последние 30 дней.
+#
+# SELECT *
+# FROM orders
+# WHERE order_date >= CURRENT_DATE - INTERVAL '30 day';
 
 
 
