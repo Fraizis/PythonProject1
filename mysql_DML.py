@@ -190,11 +190,73 @@
 # WHERE user_id IN (22, 33, 44, 55, 66)
 # ORDER BY created_at;
 
+# Функция CONCAT()
+# функция, которая принимает на вход два или более аргумента и возвращает их, объединенными в одну строку.
+#
+# SELECT
+#     CONCAT(last_name, ', ', first_name) AS full_name
+# FROM
+#     users;
+
+
+# TRIM() — удаление пробелов с обеих сторон
+# LTRIM() и RTRIM() — удаление пробелов с одной стороны
+# Очистить имя пользователя от случайных пробелов по краям
+#
+# SELECT TRIM('  Иван Петров  ') AS cleaned_name;
+
+
+# SUBSTRING() — извлечение подстроки по позиции
+# LEFT() и RIGHT() — удобные функции для извлечения с начала или конца
+
+# SELECT LEFT('CAT-12345-PROD', 3);
 
 # SELECT id, SUBSTRING(title, 1, 30), is_private
 # FROM `groups`
 # WHERE is_private = 1
 # ORDER BY title;
+
+
+# LOCATE() — это функция в SQL, которая находит позицию первого вхождения одной строки внутри другой строки.
+# Она возвращает число, которое является индексом (номером символа), с которого начинается искомая подстрока.
+
+# SUBSTRING(
+#   filename,                               -- Где вырезаем
+#   LOCATE('_', filename) + 1,              -- Начало (позиция после '_')
+#   LOCATE('.', filename) - LOCATE('_', filename) - 1  -- Длина (расстояние между '.' и '_')
+# )
+
+
+# NOW() — получение текущей даты и времени
+
+# -- При создании нового заказа мы фиксируем точное время его создания
+# INSERT INTO orders (customer_id, order_time) VALUES (123, NOW());
+
+
+# CURRENT_DATE — получение только текущей даты
+# -- Найти все задачи, которые должны быть выполнены сегодня
+# SELECT * FROM tasks WHERE due_date = CURRENT_DATE;
+
+
+# Извлечение компонентов из даты
+# SELECT
+#     order_date,
+#     EXTRACT(YEAR FROM order_date) AS sale_year,
+#     EXTRACT(MONTH FROM order_date) AS sale_month,
+#     EXTRACT(DAY FROM order_date) AS sale_day
+# FROM
+#     sales;
+
+
+# SELECT
+#     order_date,
+#     YEAR(order_date) AS sale_year,
+#     MONTH(order_date) AS sale_month,
+#     DAY(order_date) AS sale_day
+# FROM
+#     sales;
+
+
 
 
 # SELECT
@@ -623,4 +685,16 @@
 #     SELECT 1
 #     FROM users AS u2
 #     WHERE u1.email = u2.email AND u1.registration_date < u2.registration_date
+# );
+
+
+# SELECT dept_name
+# FROM departments AS d
+# WHERE EXISTS (
+#     SELECT 1
+#     FROM
+#         employees AS e
+#     WHERE
+#         d.dept_id = e.dept_id AND
+#         e.salary > 145000
 # );
