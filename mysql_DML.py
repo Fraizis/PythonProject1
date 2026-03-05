@@ -18,6 +18,27 @@
 # );
 
 
+# Копирование данных из одной таблицы в другую
+
+# скопировать в таблицу Ordersnew все заказы, которые были созданы после 08.02.2013 из таблицы Orders
+#
+# insert into Ordersnew(order_num, order_date, cust_id)
+# select order_num, order_date, cust_id
+# from Orders
+# where order_date > '2013-02-08' ;
+
+
+# Вставка данных с преобразованием или вычислениями
+
+# расчитаем в новой таблице OrderItemsnew итоговую стоимость товаров за партию,
+# но только для тех, где количество = 100
+
+# INSERT INTO OrderItemsnew(order_date, total_amount)
+# SELECT CURRENT_DATE, item_price * quantity
+# FROM OrderItems
+# WHERE OrderItems.quantity = 100;
+
+
 # Порядок ключевых слов в нем строго определен:
 #     SELECT [ DISTINCT ] <список_столбцов> [ AS <псевдонимы> ]
 #     FROM <имя_таблицы>
@@ -51,6 +72,16 @@
 #       SET Price = 1000
 #       WHERE ProductID = 3;
 #       (теперь мы уверены в условии).
+
+
+# UPDATE Ordersnew
+# SET order_date = CASE order_num
+#   WHEN 20010 THEN '2025-08-02'
+#   WHEN 20011 THEN '2025-08-03'
+#   WHEN 20012 THEN '2025-08-04'
+#   ELSE order_date
+# END
+# WHERE order_num IN (20010, 20011, 20012);
 
 
 # SELECT MIN(YEAR(birthday))
