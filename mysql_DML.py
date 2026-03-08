@@ -652,6 +652,7 @@
 #     FROM employees
 # );
 
+
 # подзапросы из FROM
 
 # SELECT
@@ -779,3 +780,23 @@
 #         d.dept_id = e.dept_id AND
 #         e.salary > 145000
 # );
+
+
+# Найти 2-ую по величине зарплату, либо NULL
+
+# SELECT
+#   MAX(salary) AS SecondHighestSalary
+# FROM
+#   Employee
+# WHERE salary < (
+#   SELECT MAX(salary)
+#   FROM Employee
+#   );
+
+
+# SELECT (
+#     SELECT DISTINCT salary
+#     FROM Employee
+#     ORDER BY salary DESC
+#     LIMIT 1 OFFSET 1
+# ) AS SecondHighestSalary;

@@ -6,6 +6,10 @@
 # CREATE DATABASE telegram;
 # USE telegram;
 
+
+# TRUNCATE очистить таблицу
+
+
 # DROP TABLE IF EXISTS users;
 # CREATE TABLE users(
 #     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
