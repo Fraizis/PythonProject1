@@ -1,4 +1,5 @@
 # DDL
+
 # CREATE, ALTER, DROP
 
 # DROP DATABASE IF EXISTS telegram;
@@ -8,6 +9,8 @@
 
 
 # TRUNCATE очистить таблицу
+
+# ALTER TABLE stories_likes ADD FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 # DROP TABLE IF EXISTS users;

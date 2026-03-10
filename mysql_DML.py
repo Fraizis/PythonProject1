@@ -1,42 +1,6 @@
 # DML
 
-# INSERT
-
-# INSERT INTO missions
-# (
-#     id,
-#     name,
-#     planet,
-#     captain
-# )
-# VALUES
-# (
-#     1,
-#     'Mars Search',
-#     'Mars',
-#     'John'
-# );
-
-
-# Копирование данных из одной таблицы в другую
-
-# скопировать в таблицу Ordersnew все заказы, которые были созданы после 08.02.2013 из таблицы Orders
-#
-# insert into Ordersnew(order_num, order_date, cust_id)
-# select order_num, order_date, cust_id
-# from Orders
-# where order_date > '2013-02-08' ;
-
-
-# Вставка данных с преобразованием или вычислениями
-
-# расчитаем в новой таблице OrderItemsnew итоговую стоимость товаров за партию,
-# но только для тех, где количество = 100
-
-# INSERT INTO OrderItemsnew(order_date, total_amount)
-# SELECT CURRENT_DATE, item_price * quantity
-# FROM OrderItems
-# WHERE OrderItems.quantity = 100;
+# INSERT, SELECT, UPDATE, DELETE
 
 
 # Порядок ключевых слов в нем строго определен:
@@ -72,6 +36,10 @@
 #       SET Price = 1000
 #       WHERE ProductID = 3;
 #       (теперь мы уверены в условии).
+
+# UPDATE channels
+# SET title = 'Все про SQL'
+# WHERE owner_user_id = 15 AND id = 35;
 
 
 # UPDATE Ordersnew
