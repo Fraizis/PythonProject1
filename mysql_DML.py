@@ -536,6 +536,12 @@
 #     ON e.office_id = o.office_id;
 
 
+# CROSS JOIN
+
+# SELECT *
+# FROM users, private_messages;
+
+
 # Эмуляция FULL OUTER JOIN с помощью UNION
 
 # UNION - без повторений, только уникальные значения
@@ -568,7 +574,7 @@
 # FROM (
 # 	SELECT sender_id
 # 	FROM channel_messages
-# 		UNION ALL
+# 	UNION ALL
 # 	SELECT sender_id
 # 	FROM group_messages
 # ) AS s
@@ -862,6 +868,53 @@
 # WINDOW w AS (ORDER BY app_language);
 
 
+# CTE
+
+# получение данных о пользователе из разных таблиц с помощью CTE (общего табличного выражения)
+
+# WITH cte1 AS (
+# 	SELECT
+# 		user_id,
+# 		app_language ,
+# 		is_premium_account
+# 	FROM user_settings
+# )
+# SELECT
+# 	firstname ,
+# 	lastname ,
+# 	app_language ,
+# 	is_premium_account
+# FROM cte1
+# JOIN users AS u ON u.id = cte1.user_id
+# WHERE id = 2
+# ;
+
+
+# в 1 запросе можно использовать несколько табличных выражений (у каждого из них должно быть свое уникальное имя)
+
+# WITH cte1 AS (
+# 	SELECT * FROM channel_subscribers
+# ),
+# cte2 AS (
+# 	SELECT * FROM group_members
+# )
+# SELECT * FROM cte2
+# ....;
+
+
+# CTE recursive
+
+# вывод иерархии сообщений (кто-кому отвечал)
+# WITH RECURSIVE message_replies(id, body, history) AS (
+# 	SELECT id, body, cast(id AS CHAR(100))
+# 	FROM group_messages
+# 	WHERE reply_to_id IS NULL
+# 		UNION ALL
+# 	SELECT gm.id, gm.body, CONCAT(mr.history, ' <-- ', gm.id)
+# 	FROM message_replies AS mr
+# 	JOIN group_messages AS gm ON mr.id = gm.reply_to_id
+# )
+# SELECT * FROM message_replies ORDER BY history
 
 
 
