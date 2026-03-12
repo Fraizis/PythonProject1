@@ -306,8 +306,6 @@
 # WHERE order_date >= CURRENT_DATE - INTERVAL '30 day';
 
 
-
-
 # SELECT
 #     COUNT(*) AS total_trips,
 #     SUM(duration_minutes) AS total_duration,
@@ -431,6 +429,27 @@
 #     total_sales DESC;
 
 
+# CROSS JOIN - работает медленно
+
+# SELECT *
+# FROM users
+# CROSS JOIN private_messages
+# WHERE users.id = private_messages.sender_id ;
+
+# также CROSS JOIN
+
+# SELECT *
+# FROM users
+# JOIN private_messages;
+
+
+# INNER JOIN - работает эффективно
+
+# SELECT *
+# FROM users
+# INNER JOIN private_messages ON users.id = private_messages.sender_id ;
+
+
 # SELECT
 #     C.Name,
 #     O.OrderID,
@@ -452,6 +471,15 @@
 #   ON d.dept_id = e.dept_id
 # WHERE
 #   e.emp_name IS NULL;
+
+
+# LEFT JOIN = INNER JOIN
+
+# SELECT *
+# FROM users
+# LEFT OUTER JOIN private_messages ON users.id = private_messages.sender_id
+# WHERE private_messages.id IS NOT NULL
+# ORDER BY private_messages.id;
 
 
 # SELECT
@@ -510,6 +538,9 @@
 
 # Эмуляция FULL OUTER JOIN с помощью UNION
 
+# UNION - без повторений, только уникальные значения
+# UNION ALL - все значения
+
 # SELECT
 #     e.emp_name,
 #     o.city
@@ -527,6 +558,22 @@
 # RIGHT JOIN
 #     offices AS o
 #     ON e.office_id = o.office_id;
+
+
+# Использование UNION ALL - самые активные в сообщениях пользователи
+
+# SELECT
+# 	count(*) AS cnt,
+# 	sender_id
+# FROM (
+# 	SELECT sender_id
+# 	FROM channel_messages
+# 		UNION ALL
+# 	SELECT sender_id
+# 	FROM group_messages
+# ) AS s
+# GROUP BY sender_id
+# ORDER BY cnt DESC
 
 
 # JOIN 3 таблиц
@@ -547,6 +594,7 @@
 
 
 # Самый дорогой товар купленный клиентом
+
 # SELECT
 #     p.product_name
 # FROM
@@ -667,6 +715,7 @@
 # ) AS sum_price;
 
 
+
 # SELECT d.dept_name, ds.avg_salary
 # FROM departments AS d
 # JOIN (
@@ -699,6 +748,13 @@
 #     );
 
 
+# SELECT
+# 	COUNT(*)
+# FROM private_messages
+# WHERE
+# 	receiver_id = (SELECT id FROM users WHERE email = 'hardy42@example.com');
+
+
 # EXISTS
 
 # SELECT ...
@@ -707,7 +763,9 @@
 #     SELECT 1 FROM table2 AS t2 WHERE t2.key = t1.key -- Коррелированный подзапрос
 # );
 
+
 # -- Это эффективная и надежная замена LEFT JOIN ... WHERE ... IS NULL
+
 # SELECT Name
 # FROM Customers AS C
 # WHERE NOT EXISTS (
@@ -748,6 +806,63 @@
 #         d.dept_id = e.dept_id AND
 #         e.salary > 145000
 # );
+
+
+# оконные функции
+
+# подсчет популярности яыков (с группировкой и агрегирующей функцией) с оконной функцией)
+
+# SELECT DISTINCT
+# 	COUNT(*) OVER (PARTITION BY app_language) AS cnt,
+# 	app_language
+# FROM user_settings;
+
+
+# оконные функции позволяют выводить любые другие поля таблицы
+
+# SELECT DISTINCT
+# 	COUNT(*) OVER (PARTITION BY app_language) AS cnt,
+# 	app_language,
+# 	color_scheme
+# FROM user_settings;
+
+
+# в рамках одного запроса можно использовать несколько оконных функций
+
+# SELECT DISTINCT
+# 	ROW_NUMBER() OVER() AS rn,
+# 	RANK() OVER(ORDER BY app_language) AS language_rank,
+# 	DENSE_RANK() OVER(ORDER BY app_language) AS language_rank2,
+# 	ROW_NUMBER() OVER(PARTITION BY app_language) AS rn2,
+# 	COUNT(*) OVER (PARTITION BY app_language) AS cnt1,
+# 	COUNT(*) OVER (PARTITION BY color_scheme) AS cnt2,
+# 	app_language,
+# 	color_scheme
+# FROM user_settings
+# ORDER BY app_language, rn2;
+
+
+# альтернативный синтаксис (именованные оконные функции)
+
+# SELECT DISTINCT
+# 	COUNT(*) OVER win1 AS cnt,
+# 	app_language
+# FROM user_settings
+# WINDOW win1 AS (PARTITION BY app_language);
+
+
+# использование одного 'окна' вместе с разными фунциями
+
+# SELECT
+#   app_language,
+#   ROW_NUMBER() OVER w AS 'row_number',
+#   RANK()       OVER w AS 'rank',
+#   DENSE_RANK() OVER w AS 'dense_rank'
+# FROM user_settings
+# WINDOW w AS (ORDER BY app_language);
+
+
+
 
 
 # Найти 2-ую по величине зарплату, либо NULL
