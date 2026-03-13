@@ -852,6 +852,27 @@
 # FROM user_settings;
 
 
+# SELECT DISTINCT
+#     s.id,
+#     COUNT(sl.story_id) OVER(PARTITION BY sl.story_id) AS likes_count
+# FROM stories AS s
+# JOIN stories_likes AS sl ON s.id = sl.story_id
+# WHERE s.user_id = 2
+# ORDER BY likes_count DESC;
+
+
+# WITH cte1 AS (
+#     SELECT DISTINCT
+#         COUNT(*) OVER(PARTITION BY reaction_id) AS `count`,
+#         reaction_id
+#     FROM private_message_reactions
+# )
+# SELECT *
+# FROM cte1
+# WHERE `count` > 80
+# ORDER BY `count` DESC;
+
+
 # оконные функции позволяют выводить любые другие поля таблицы
 
 # SELECT DISTINCT
@@ -859,6 +880,15 @@
 # 	app_language,
 # 	color_scheme
 # FROM user_settings;
+
+
+# SELECT DISTINCT
+#     user_id,
+#     COUNT(channel_id) OVER(PARTITION BY user_id) AS channels_count
+# FROM channel_subscribers
+# WHERE status = 'joined'
+# ORDER BY channels_count DESC
+# LIMIT 1;
 
 
 # в рамках одного запроса можно использовать несколько оконных функций
