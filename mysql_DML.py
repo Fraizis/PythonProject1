@@ -655,6 +655,15 @@
 # );
 
 
+# SELECT
+#     firstname,
+#     lastname,
+#     birthday,
+#     (SELECT app_language FROM user_settings WHERE user_id = users.id)
+# FROM users
+# WHERE email =  'mgoyette@example.org';
+
+
 # SELECT emp_name
 # FROM employees
 # WHERE dept_id = (
@@ -736,7 +745,26 @@
 # ON d.dept_id = ds.dept_id;
 
 
+# SELECT s.id, COUNT(sl.id) AS likes_count
+# FROM stories AS s
+# JOIN stories_likes AS sl ON s.id = sl.story_id
+# WHERE s.user_id = 2
+# GROUP BY s.id
+# ORDER BY likes_count DESC;
+
+
 # Коррелированные подзапросы
+
+# SELECT
+#     id,
+#     (SELECT firstname FROM users WHERE id = group_messages.sender_id) AS firstname,
+#     (SELECT lastname FROM users WHERE id = group_messages.sender_id) AS lastname,
+#     SUBSTRING(body, 1, 30) AS body,
+#     created_at
+# FROM group_messages
+# WHERE group_id = 11
+# ORDER BY created_at;
+
 
 # SELECT
 #     name,
