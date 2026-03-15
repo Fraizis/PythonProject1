@@ -975,6 +975,129 @@
 # SELECT * FROM message_replies ORDER BY history
 
 
+# Полнотекстовый поиск
+
+# обычный фильтр с оператором WHERE-LIKE
+# SELECT *
+# FROM saved_messages
+# WHERE body LIKE '%ratione%' OR body LIKE '%est%';
+
+
+# создание полнотекстового индекса на поле body
+# CREATE FULLTEXT INDEX full_body_idx ON saved_messages(body);
+
+
+# полнотекстовый поиск в режиме BOOLEAN
+# + обязательное слово
+# - исключаемое слово
+# SELECT *
+# FROM saved_messages
+# WHERE match(body) AGAINST('+ratione +est -voluptatem' IN BOOLEAN MODE);
+
+
+# полнотекстовый поиск в режиме BOOLEAN
+# * заменитель любого окончания слова
+# SELECT *
+# FROM saved_messages
+# WHERE MATCH(body) AGAINST('+ratione +est +vol*' IN BOOLEAN MODE);
+
+
+# Представления
+
+# создать или изменить представление
+
+# CREATE OR REPLACE VIEW v_users_messages AS
+# 	SELECT
+# 		users.id AS uid, firstname, lastname,
+# 		private_messages.id AS pmid, sender_id, body, created_at
+# 	FROM users
+# 	LEFT OUTER JOIN private_messages ON users.id = private_messages.sender_id
+# 	ORDER BY private_messages.id
+# 	LIMIT 12;
+
+# вывод данных через представление
+
+# SELECT *
+# FROM v_users_messages
+# WHERE uid = 29;
+
+
+# Процедуры
+
+# процедура, возвращающая указанное число случайных групп или каналов
+# DROP PROCEDURE IF EXISTS telegram.random_society;
+#
+# DELIMITER $$
+# $$
+# CREATE PROCEDURE telegram.random_society(cnt int)
+# BEGIN
+#     SELECT id, title , invite_link , 'channel' AS community_type
+#     FROM channels
+#         UNION
+#     SELECT id, title , invite_link , 'group' AS community_type
+#     FROM `groups`
+#     ORDER BY rand()
+#     LIMIT cnt;
+# END $$
+# DELIMITER ;
+
+
+# вызов процедуры
+# CALL random_society(3);
+
+
+# Переменные
+
+# задаем локальную переменную
+
+# SET @users_count = 10;
+# читаем значение переменной
+# SELECT @users_count;
+
+# выводим список глобальных переменных
+
+# SHOW GLOBAL VARIABLES;
+
+# выводим только переменную foreign_key_checks (отвечает за проверку внешних ключей)
+
+# SHOW VARIABLES LIKE 'foreign_key_checks';
+
+# выводим глобальное значение системной переменной
+
+# SHOW GLOBAL VARIABLES LIKE 'foreign_key_checks';
+
+# выводим локальное значение системной переменной
+
+# SHOW SESSION VARIABLES LIKE 'foreign_key_checks';
+
+# выключаем локально проверку внешних ключей
+
+# SET @@foreign_key_checks = 0;
+# SET foreign_key_checks = 0;
+
+# выключаем глобально проверку внешних ключей
+
+# SET GLOBAL foreign_key_checks = 0;
+
+# присвоение значений переменным в SELECT запросе
+
+# SELECT
+# 	@id := id,
+# 	@firstname := firstname
+# FROM users
+# WHERE id = 1;
+
+# чтение переменных
+
+# SELECT @id, @firstname;
+
+# второй вариант присвоения значений переменным в SELECT запросе
+
+# SELECT id, firstname
+# INTO @id, @firstname
+# FROM users
+# WHERE id = 11;
+
 
 # Найти 2-ую по величине зарплату, либо NULL
 
