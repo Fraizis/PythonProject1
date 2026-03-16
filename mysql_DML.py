@@ -978,18 +978,24 @@
 # Полнотекстовый поиск
 
 # обычный фильтр с оператором WHERE-LIKE
+
 # SELECT *
 # FROM saved_messages
 # WHERE body LIKE '%ratione%' OR body LIKE '%est%';
 
 
 # создание полнотекстового индекса на поле body
+
 # CREATE FULLTEXT INDEX full_body_idx ON saved_messages(body);
+# ALTER TABLE channels ADD FULLTEXT INDEX asdf(title);
+# ALTER TABLE channels ADD FULLTEXT asdf(title);
+# ALTER TABLE channels ADD FULLTEXT (title);
 
 
 # полнотекстовый поиск в режиме BOOLEAN
 # + обязательное слово
 # - исключаемое слово
+
 # SELECT *
 # FROM saved_messages
 # WHERE match(body) AGAINST('+ratione +est -voluptatem' IN BOOLEAN MODE);
@@ -1046,6 +1052,27 @@
 # CALL random_society(3);
 
 
+# Функции
+
+# DROP FUNCTION IF EXISTS deactivate_infants;
+#
+# DELIMITER //
+#
+# CREATE FUNCTION deactivate_infants()
+# RETURNS INT MODIFIES SQL DATA
+
+# BEGIN
+#     UPDATE users
+#     JOIN user_settings ON user_settings.user_id = users.id
+#     SET is_active = 0
+#     WHERE YEAR(NOW()) - YEAR(birthday) < 18 AND is_premium_account = 0;
+#
+#     RETURN ROW_COUNT();
+# END //
+#
+# DELIMITER ;
+
+
 # Переменные
 
 # задаем локальную переменную
@@ -1099,6 +1126,96 @@
 # WHERE id = 11;
 
 
+# Транзакции
+
+# начать транзакцию
+# START TRANSACTION;
+# 	INSERT INTO `users` (firstname, lastname, email, birthday)
+# 	VALUES ('Rahsan2','Runt2','crist.donny2@example.net','2018-01-07');
+
+# 	SET @user_id = LAST_INSERT_ID();
+#
+# 	INSERT INTO `user_settings` (user_id, is_premium_account, app_language, created_at)
+# 	VALUES (@user_id, FALSE, 'english', NOW());
+
+# коммит (фиксация) изменений
+# COMMIT;
+
+# ролбэк (откат) изменений
+# ROLLBACK;
+
+# проверка состояния таблиц после транзакции
+# SELECT * FROM users ORDER BY id DESC;
+# SELECT * FROM user_settings ORDER BY user_id DESC;
+
+
+# удаляем процедуру с проверкой
+# DROP PROCEDURE IF EXISTS telegram.add_user;
+
+# устанавливаем разделитель команд
+# DELIMITER $$
+
+# создаем процедуру
+# CREATE PROCEDURE telegram.add_user(
+#     _firstname VARCHAR(100),
+#     _lastname VARCHAR(100),
+#     _email VARCHAR(100),
+#     _birthday DATE,
+#     _is_premium_account BIT,
+#     _app_language ENUM('english','french','russian','german','belorussian','croatian','dutch'),
+#
+#     OUT trans_result VARCHAR(200)
+# )
+# BEGIN
+# объявляем необходимые переменные
+#     DECLARE has_error BIT DEFAULT 0;
+#     DECLARE code VARCHAR(100);
+#     DECLARE error_string VARCHAR(100);
+
+# объявляем обработчик исключений
+#     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+#     BEGIN
+#         SET has_error = 1;
+#
+#         GET stacked DIAGNOSTICS CONDITION 1
+#             code = RETURNED_SQLSTATE, error_string = MESSAGE_TEXT;
+#
+#         SET trans_result = CONCAT('Error occured! Code: ', code, '. Text: ', error_string);
+#     END;
+
+# начинаем транзакцию
+#     START TRANSACTION;
+#         INSERT INTO `users` (firstname, lastname, email, birthday)
+#         VALUES (_firstname, _lastname, _email, _birthday);
+#
+#         INSERT INTO `user_settings` (user_id, is_premium_account, app_language, created_at)
+#         VALUES (LAST_INSERT_ID(), _is_premium_account, _app_language, NOW());
+
+# проверяем ошибки
+#     IF has_error THEN
+        # SET trans_result = 'Error!';
+        # ROLLBACK;
+#     ELSE
+#         SET trans_result = 'Ok.';
+#         COMMIT;
+#     END IF;
+# END$$
+
+# возвращаем разделитель в значение по умолчанию
+# DELIMITER ;
+
+
+# вызываем процедуру с параметрами
+# CALL add_user('Leslie3', 'Reichel3',  'cronin.emmitt3@example.net', '1982-05-01', FALSE, 'english', @trans_result);
+
+# читаем результат выполнения процедуры
+# SELECT @trans_result;
+
+# проверяем данные в таблицах
+# SELECT * FROM users ORDER BY id DESC;
+# SELECT * FROM user_settings ORDER BY user_id DESC;
+
+
 # Найти 2-ую по величине зарплату, либо NULL
 
 # SELECT
@@ -1117,3 +1234,24 @@
 #     ORDER BY salary DESC
 #     LIMIT 1 OFFSET 1
 # ) AS SecondHighestSalary;
+
+
+# Работники у которых зарплата выше чем у их менеджеров
+
+# SELECT e1.name AS `Employee`
+# FROM employee AS e1
+# JOIN employee AS e2 ON e2.id = e1.managerId
+# WHERE e1.salary > e2.salary;
+
+
+# SELECT email
+# FROM Person
+# GROUP BY email
+# HAVING COUNT(email) >= 2;
+
+
+# SELECT name AS Customers
+# FROM Customers
+# WHERE id NOT IN (
+#     SELECT customerId FROM Orders
+# );
