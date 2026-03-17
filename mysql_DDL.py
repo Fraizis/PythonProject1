@@ -1,5 +1,33 @@
 # DDL
 
+
+# включить логирование дополнительной информации о блокировках
+
+# SET GLOBAL innodb_print_all_deadlocks = ON;
+
+# проверить значение глобальной переменной
+
+# SHOW VARIABLES LIKE 'innodb_print_all_deadlocks';
+
+# вывести информацию о текущих блокировках
+
+# SELECT * FROM performance_schema.data_locks
+
+# вывести информацию о текущих ожидающих командах
+
+# SELECT * FROM performance_schema.data_lock_waits;
+
+# вывести количество взаимных блокировок со времени старта сервера
+
+# SELECT `count`
+# FROM INFORMATION_SCHEMA.INNODB_METRICS
+# WHERE NAME="lock_deadlocks";
+
+# посмотреть имя/путь файла с логами ошибок
+
+# SELECT @@log_error;
+
+
 # CREATE, ALTER, DROP
 
 # DROP DATABASE IF EXISTS telegram;
