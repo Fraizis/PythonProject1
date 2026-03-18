@@ -1183,3 +1183,73 @@
 # WHERE id NOT IN (
 #     SELECT customerId FROM Orders
 # );
+
+
+# Найти коэффициент отмены бронирования для такси
+
+# WITH banned_users AS (
+#     SELECT user_id
+#     FROM users_trips
+#     WHERE banned = "Yes"
+# )
+# SELECT
+#     request_at AS Day,
+#     ROUND(SUM(IF(status != 'completed', 1, 0)) / COUNT(*), 2) AS 'Cancellation Rate'
+# FROM trips
+# WHERE
+# 	client_id NOT IN (SELECT * FROM banned_users) AND
+# 	driver_id NOT IN (SELECT * FROM banned_users) AND
+# 	request_at BETWEEN "2013-10-01" AND "2013-10-03"
+# GROUP BY request_at;
+
+
+# Максимальная зарплата у сотрудников по отделам
+
+# SELECT
+#     d.name AS Department,
+#     e.name AS Employee,
+#     ds.Salary
+# FROM Employee AS e
+# JOIN Department AS d ON d.id = e.departmentId
+# JOIN (
+#     SELECT
+#         departmentId,
+#         MAX(salary) As Salary
+#     FROM
+#         Employee
+#     GROUP BY
+#         departmentId
+# ) AS ds
+# ON e.departmentId = ds.departmentId
+# WHERE e.salary = ds.Salary;
+
+
+# SELECT
+#   d.name as Department,
+#   e.name as Employee,
+#   e.salary as Salary
+# FROM Employee e
+# JOIN Department d ON e.departmentId = d.id
+# WHERE e.salary = (
+#     SELECT MAX(salary)
+#     FROM Employee
+#     WHERE departmentId = e.departmentId
+# );
+
+
+# Оконная функция
+
+# With temp_table as (
+#     select d.name as Department,
+#     e.name as employee,
+#     e.salary,
+#     Dense_rank() over(partition by departmentid order by salary desc) as rnk
+#     from Employee e
+#     Join Department d on e.departmentid=d.id
+# )
+# select
+# Department,
+# employee,
+# salary
+# from temp_table
+# where rnk=1;
