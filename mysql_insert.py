@@ -38,6 +38,34 @@
 #   phone = 123456789;
 
 
+# Перенести колонку из 1 таблицы в другую
+
+# добавление нового поля
+# ALTER TABLE users ADD COLUMN status_text VARCHAR(70);
+
+# копирование данных из таблицы user_settings в таблицу users (поле status_text)
+# UPDATE users AS u
+# JOIN user_settings AS us ON u.id = us.user_id
+# SET u.status_text = us.status_text ;
+
+# удаление поля в таблице user_settings
+# ALTER TABLE user_settings DROP COLUMN status_text;
+
+
+# Посчитать количество лайков для каждой истории и внести запись в другую таблицу
+# ALTER TABLE stories ADD COLUMN likes_count BIGINT UNSIGNED;
+
+# UPDATE stories s
+# JOIN (
+# 	SELECT
+# 		story_id,
+# 		COUNT(story_id) AS c
+# 		FROM stories_likes
+# 		GROUP BY story_id
+# 	) sl ON sl.story_id = s.id
+# SET s.likes_count = sl.c;
+
+
 # скопировать в таблицу Ordersnew все заказы, которые были созданы после 08.02.2013 из таблицы Orders
 
 # insert into Ordersnew(order_num, order_date, cust_id)
