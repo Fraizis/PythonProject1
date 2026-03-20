@@ -1057,7 +1057,7 @@
 # DROP FUNCTION IF EXISTS deactivate_infants;
 #
 # DELIMITER //
-#
+
 # CREATE FUNCTION deactivate_infants()
 # RETURNS INT MODIFIES SQL DATA
 
@@ -1253,3 +1253,16 @@
 # salary
 # from temp_table
 # where rnk=1;
+
+
+# отчет по использованию каждой модели самоката
+
+# SELECT
+# model_name,
+#   COUNT(actual_distance) AS total_trips,
+#   SUM(actual_distance) AS total_distance,
+#   AVG(ROUND((actual_distance / expected_distance) * 100)) AS avg_completion,
+#   MIN(ROUND((actual_distance / expected_distance) * 100)) AS min_completion
+# FROM scooter_trips
+# GROUP BY model_name
+# ORDER BY model_name;

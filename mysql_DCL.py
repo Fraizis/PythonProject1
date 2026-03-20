@@ -108,9 +108,99 @@
 
 # DROP USER 'paul_manager'@'localhost';
 
-# выдать указанные права пользователю
 
-# GRANT DELETE ON world.* TO 'alex_dev'@'localhost';
-# GRANT SELECT ON world.* TO 'alex_dev'@'localhost';
-# GRANT UPDATE ON world.* TO 'alex_dev'@'localhost';
-# GRANT INSERT ON world.* TO 'alex_dev'@'localhost';
+# создать роли
+
+# CREATE ROLE '_admin';
+# CREATE ROLE '_admin', '_developer', '_tester', '_manager';
+
+# посмотреть определение таблицы user в БД mysql
+
+# SHOW COLUMNS FROM mysql.user;
+
+# вывести содержимое указанной таблицы
+
+# SELECT * FROM mysql.user;
+
+# раздать права ролям (по аналогии с пользователями в прошлом уроке)
+
+# GRANT ALL privileges ON *.* TO '_admin';
+
+# GRANT ALL privileges ON telegram.* TO '_developer';
+
+# GRANT CREATE, ALTER, DROP, SELECT, UPDATE, INSERT, DELETE
+# ON telegram.*
+# TO '_tester';
+
+# GRANT SELECT ON telegram.* TO '_manager';
+
+# забрать права у пользователей
+
+# REVOKE ALL ON *.*
+# FROM
+# 	`john_admin`@`localhost`,
+# 	`alex_dev`@`localhost`,
+# 	`max_tester`@`localhost`,
+# 	`paul_manager`@`localhost`;
+
+# проверить права пользователей
+
+# SHOW GRANTS FOR `john_admin`@`localhost`;
+# SHOW GRANTS FOR `alex_dev`@`localhost`;
+
+# присвоить группы пользователям
+
+# GRANT '_admin' TO `john_admin`@`localhost`;
+# GRANT '_developer' TO `alex_dev`@`localhost`;
+# GRANT '_tester' TO `max_tester`@`localhost`;
+# GRANT '_manager' TO `paul_manager`@`localhost`;
+
+# проверить роль текущего пользователя
+
+# SELECT CURRENT_ROLE();
+
+# установить роли по умолчанию (чтобы роль применялась автоматически для пользователей)
+
+# SET DEFAULT ROLE ALL TO
+# 	`john_admin`@`localhost`,
+# 	`alex_dev`@`localhost`,
+# 	`max_tester`@`localhost`,
+# 	`paul_manager`@`localhost`;
+
+# забрать роль у пользователя
+
+# REVOKE '_manager' FROM `paul_manager`@`localhost`;
+
+# создать нового менеджера
+
+# CREATE USER 'anna_manager'@'localhost' IDENTIFIED BY '12345'
+# PASSWORD EXPIRE INTERVAL 180 DAY
+# FAILED_LOGIN_ATTEMPTS 3
+# PASSWORD_LOCK_TIME 2;
+
+# присвоить группу новому пользователю
+
+# GRANT '_manager' TO `anna_manager`@`localhost`;
+
+# установить роль по умолчанию для него
+
+# SET DEFAULT ROLE ALL TO `anna_manager`@`localhost`;
+
+# удалить роль
+
+# DROP ROLE '_manager';
+
+
+# # создание VIEW для менеджера
+
+# DROP VIEW IF EXISTS telegram.v_telegram_user_names;
+# CREATE VIEW v_telegram_user_names AS
+# SELECT
+#   firstname,
+#   lastname
+# FROM telegram.users;
+
+
+# GRANT SELECT
+# ON telegram.v_telegram_user_names
+# TO '_manager';
