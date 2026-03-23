@@ -21,6 +21,40 @@
 # SET Price = 1000;
 
 
+# Оптимизация
+
+# включаем логирование медленных запросов
+
+# SET GLOBAL slow_query_log = 'ON';
+
+# определяем расположение лога для медленных запросов
+
+# SET GLOBAL slow_query_log_file = 'c:\\mysql-slow-query.log';
+
+# устанавливаем критерий для медленных запросов (время исполнения в секундах)
+
+# SET GLOBAL long_query_time = 1;
+
+# включаем логирование для запросов, не использующих индексы
+
+# SET GLOBAL log_queries_not_using_indexes = 'ON';
+
+# выводим наши переменные
+
+# SHOW GLOBAL variables LIKE '%slow%';
+# SHOW GLOBAL variables LIKE '%long%';
+
+# пример запроса, не использующего индекс
+
+# SELECT *
+# FROM channels
+# WHERE title = 'some channel title...';
+
+# добавление индекса на поле title
+
+# ALTER TABLE channels ADD INDEX (title);
+
+
 # UPDATE
 
 # Безопасный рабочий процесс перед UPDATE:
@@ -1142,6 +1176,207 @@
 
 # разблокировать все таблицы
 # UNLOCK TABLES;
+
+
+# EXPLAIN
+
+# EXPLAIN SELECT
+# 	s.id,
+# 	COUNT(*) AS cnt,
+# 	u.firstname,
+# 	u.lastname,
+# 	(SELECT app_language FROM user_settings AS us WHERE us.user_id = u.id) AS app_language
+# FROM users AS u
+# JOIN stories AS s ON u.id = s.user_id
+# JOIN stories_likes AS sl ON s.id = sl.story_id
+# GROUP BY s.id
+# ORDER BY cnt;
+
+
+# логирование
+
+# вывести глобальные переменные, в названии которых есть слово 'log'
+
+# SHOW GLOBAL variables LIKE '%log%';
+
+# меняем/устанавливаем файл с общими логами
+
+# SET GLOBAL general_log = 'OFF';
+# SET GLOBAL general_log_file = 'mysql_general.log';
+# SET GLOBAL general_log = 'ON';
+
+# соответствующие настройки в файле конфигов
+
+# [mysqld]
+# general_log_file = mysql_general.log
+# general_log = 1
+
+# меняем/устанавливаем файл с логами медленных запросов
+
+# SET GLOBAL slow_query_log = 'OFF';
+# SET GLOBAL long_query_time = 0.3;
+# SET GLOBAL slow_query_log_file = 'mysql_slow_queries.log';
+# SET GLOBAL slow_query_log = 'ON';
+
+# соответствующие настройки в файле конфигов
+# [mysqld]
+# long_query_time = 0.3
+# slow_query_log_file = mysql_slow_queries.log
+# slow_query_log = 1
+
+
+# -- циклы
+
+# создание процедуры с простым примером цикла REPEAT
+# DROP PROCEDURE IF EXISTS telegram.repeat_loop_sample;
+
+# DELIMITER $$
+# $$
+# CREATE DEFINER=`root`@`localhost` PROCEDURE `telegram`.`repeat_loop_sample`(start_number INT)
+# BEGIN
+#   DECLARE current_number INT;
+#   DECLARE _result VARCHAR(255);
+#   SET current_number = start_number;
+#   SET _result = '';
+#
+#   REPEAT
+#     SET _result = CONCAT(_result, current_number, ', ');
+#     SET current_number = current_number - 1;
+#     UNTIL current_number <= 0
+#   END REPEAT;
+#
+#   SELECT _result;
+# END $$
+# DELIMITER ;
+
+# -- вызов процедуры с циклом
+# CALL repeat_loop_sample(10);
+
+
+# создание процедуры с простым примером цикла WHILE
+
+# DROP PROCEDURE IF EXISTS telegram.while_loop_sample;
+
+# DELIMITER $$
+# $$
+# CREATE DEFINER=`root`@`localhost` PROCEDURE `telegram`.`while_loop_sample`(start_number INT)
+# BEGIN
+#   DECLARE current_number INT;
+#   DECLARE _result VARCHAR(255);
+#   SET current_number = start_number;
+#   SET _result = '';
+#
+#   WHILE current_number > 0 DO
+#     SET _result = CONCAT(_result, current_number, ', ');
+#     SET current_number = current_number - 1;
+#   END WHILE;
+#
+#   SELECT _result;
+# END $$
+# DELIMITER ;
+#
+# -- вызов процедуры с циклом
+# CALL while_loop_sample(10);
+
+
+# создание процедуры добавляющей указанное количество случайных пользователей
+
+# DROP PROCEDURE IF EXISTS telegram.add_bunch_of_users;
+#
+# DELIMITER $$
+# $$
+# CREATE DEFINER=`root`@`localhost` PROCEDURE `telegram`.`add_bunch_of_users`(users_limit INT)
+# BEGIN
+#     DECLARE user_email varchar(100);
+#     DECLARE user_phone BIGINT UNSIGNED;
+#     DECLARE random_phone_number BIGINT UNSIGNED;
+#     DECLARE users_count int;
+#
+#     SET users_count = 0;
+#
+#     WHILE users_count < users_limit
+#     DO
+#         SET random_phone_number = FLOOR(RAND() * 10000000000);
+#         SET user_email = concat('user_', random_phone_number, '@gmail.com');
+#         SET user_phone = random_phone_number;
+#
+#         INSERT INTO users(email, phone)
+#         VALUES (user_email, user_phone);
+#
+#         SET users_count = users_count + 1;
+#     END WHILE;
+# END$$
+# DELIMITER ;
+#
+# -- вызов процедуры
+
+# CALL add_bunch_of_users(5000);
+
+
+# -- курсор
+
+# создаем процедуру с курсором
+# CREATE PROCEDURE telegram.fix_firstname()
+# BEGIN
+#     DECLARE _id BIGINT UNSIGNED;
+#     DECLARE _firstname VARCHAR(100);
+#     DECLARE _first_letter CHAR(1);
+#     DECLARE _rest_name_part VARCHAR(100);
+#
+#     DECLARE done BIT DEFAULT 0;
+#     DECLARE cur CURSOR FOR
+#         SELECT id, firstname
+#         FROM `users`
+#         WHERE LEFT(firstname, 1) BETWEEN 'a' AND 'z' COLLATE utf8mb4_bin;
+#
+#     DECLARE CONTINUE HANDLER FOR NOT FOUND
+#         SET done = true;
+#
+#     OPEN cur;
+#     FETCH cur INTO _id, _firstname;
+#
+#     WHILE NOT done DO
+#         SET _first_letter = LEFT(_firstname, 1);
+#         SET _rest_name_part = SUBSTRING(_firstname, 2, CHAR_LENGTH(_firstname));
+#
+#         UPDATE users
+#         SET firstname = CONCAT(UPPER(_first_letter), _rest_name_part)
+#         WHERE id = _id;
+#
+#         FETCH cur INTO _id, _firstname;
+#     END WHILE;
+#
+#     CLOSE cur;
+# END
+
+# вызываем процедуру
+
+# CALL fix_firstname();
+
+# проверяем: остались ли имена, начинающиеся с маленькой английской буквы
+
+# SELECT *
+# FROM `users`
+# WHERE  LEFT(firstname, 1) BETWEEN 'a' AND 'z' COLLATE utf8mb4_bin
+
+
+# SQL иньекции
+
+# пример ожидаемого запроса
+
+# SELECT * FROM questions WHERE id = 78717449
+
+# пример запроса с инъекцией
+
+# SELECT * FROM questions WHERE id = 78717449;drop table users;
+
+# пример ожидаемого запроса
+
+# SELECT * FROM users WHERE email = 'user1@gmail.com' AND password = '12345';
+
+# пример запроса с инъекцией
+
+# SELECT * FROM users WHERE email = 'user1@gmail.com' or 1=1;-- ' AND password = '12345';
 
 
 # Найти 2-ую по величине зарплату, либо NULL

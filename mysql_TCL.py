@@ -12,6 +12,14 @@
 #      ROLLBACK;
 
 
+# уровни изоляции
+
+# Read uncommitted
+# Read committed
+# Repeatable read
+# Serializable
+
+
 # BEGIN TRANSACTION WORK;
 # INSERT INTO MyTable VALUES ('50', 'some string');
 # COMMIT WORK;
