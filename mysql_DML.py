@@ -1501,3 +1501,95 @@
 # FROM scooter_trips
 # GROUP BY model_name
 # ORDER BY model_name;
+
+
+# -- удалить дубликаты email
+
+# WITH cte AS (
+# 	SELECT
+# 		id,
+# 		DENSE_RANK() OVER(PARTITION BY email ORDER BY id) AS ranking
+# 	FROM Person
+# )
+# DELETE Person
+# FROM Person
+# JOIN cte ON Person.id = cte.id
+# WHERE ranking > 2;
+#
+#
+# DELETE FROM Person
+# WHERE id NOT IN (
+#     SELECT id FROM (
+#         SELECT MIN(id) AS id
+#         FROM Person
+#         GROUP BY email
+#     ) AS temp
+# );
+#
+#
+# -- топ - 3 самых высоких зарплат в каждом отделе
+#
+# WITH new_table AS (
+#     SELECT
+#         d.name AS Department,
+#         e.name AS Employee,
+#         e.salary AS Salary,
+#         DENSE_RANK() OVER(PARTITION BY d.name ORDER BY e.salary DESC) AS ranking
+#     FROM Employee e
+#     LEFT JOIN Department d
+#     ON e.departmentId = d.id
+# )
+# SELECT Department, Employee, Salary
+# FROM new_table
+# WHERE ranking <= 3;
+#
+#
+# SELECT
+# 	id,
+# 	firstname,
+# 	DENSE_RANK() OVER(ORDER BY id) my_dense_rank,
+# 	RANK() OVER(ORDER BY firstname) my_rank
+# FROM users
+# ORDER BY my_rank;
+
+
+# Найти дни в которые температура была выше чем днем раннее
+
+# select
+# a.id
+# from Weather a
+# join Weather b
+# where a.recorddate = (b.recorddate + interval '1' day)
+# and a.temperature > b.temperature;
+
+# select w1.id as Id
+# from Weather w1
+# left join Weather w2 on w1.recordDate=w2.recordDate+ INTERVAL '1'DAY
+# where w1.temperature>w2.temperature;
+
+
+# SELECT w1.id
+# FROM Weather AS w1
+# CROSS JOIN Weather AS w2
+# WHERE
+# 	w1.temperature > w2.temperature AND
+# 	DATEDIFF(w1.recordDate, w2.recordDate) = 1;
+
+
+# процент пользователей от общего числа которые зашли в игру на следующий день после первого оннлайн
+
+# WITH ct1 AS (
+#     SELECT player_id, MIN(event_date) AS first_login
+#     FROM Activity
+#     GROUP BY player_id
+# ),
+# ct2 AS (
+#     SELECT a1.player_id, a1.event_date
+#     FROM Activity a1
+#     JOIN ct1 ON a1.event_date = ct1.first_login + INTERVAL '1' DAY
+#     AND a1.player_id = ct1.player_id
+# )
+# SELECT
+#     ROUND(COUNT(*) /
+#     (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
+# FROM ct2;
